@@ -620,7 +620,7 @@ if(ENLACES.video){
   const p=document.getElementById('pantalla'); const v=ENLACES.video;
   const yt=v.match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/);
   p.innerHTML = yt ? `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}" title="Vídeo Angelito Burlón" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-                   : `<video controls playsinline preload="metadata" poster="video/angelito_burlon.jpg"><source src="${v}" type="video/mp4"><track kind="subtitles" srclang="es" label="Español" src="video/angelito_burlon.vtt"></video>`;
+                   : `<video controls playsinline preload="metadata" poster="video/portada_video.jpg"><source src="${v}" type="video/mp4"><track kind="subtitles" srclang="es" label="Español" src="video/angelito_burlon.vtt"></video>`;
 }
 
 /* ---------- menú móvil y sección activa ---------- */

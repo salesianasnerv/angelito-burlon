@@ -52,5 +52,5 @@ Desde esta carpeta:
 - El cuento es una adaptación libre de «Rastro de Dios», de Montserrat del Amo (Ediciones SM): antes de difundir la web
   fuera del colegio conviene confirmar el permiso de uso público.
 - Las alas que separan las páginas de papel (`img/alas.svg`, `img/borde.svg`) salen de `fuentes/alas_separador.py`.
-- La portada del vídeo (`video/angelito_burlon.jpg`) se diseña en `fuentes/portada_video.html` y se genera con `node fuentes/portada_video.js`.
+- La portada del vídeo (`video/portada_video.jpg`) se diseña en `fuentes/portada_video.html` y se genera con `node fuentes/portada_video.js`.
 - Para que la página vaya fluida: las escenas del cuento solo cargan su imagen y su clip cuando se acercan, y no se usan filtros de desenfoque ni inclinaciones 3D al hacer scroll.
