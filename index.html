@@ -291,6 +291,9 @@ p{margin:0}
 .tarjeta p{color:var(--texto-noche-suave)}
 .tarjeta .edad{font-weight:800;color:var(--oro-claro);font-size:.9rem}
 .tarjeta .btn{justify-self:start;margin-top:6px}
+.tarjeta .chip{justify-self:start}
+.tarjeta .carta{justify-self:start;color:var(--oro-claro);font-weight:700;font-size:.95rem;text-decoration:underline;text-underline-offset:3px}
+.tarjeta .carta[aria-disabled]{display:none}
 @media (max-width:960px){.tarjetas{grid-template-columns:1fr}.tarjeta{transform:none}}
 
 /* ---------- juego ---------- */
@@ -514,6 +517,7 @@ footer a{color:var(--cielo);font-weight:700}
           <span class="edad">3, 4 y 5 años</span>
           <p>Las travesuras del angelito en el aula, la estrella que cuidamos entre todos y pequeños gestos cada semana.</p>
           <a class="btn btn-oro" href="#" data-enlace="infantil" aria-disabled="true">Ver proyecto</a>
+          <a class="carta" href="#" data-enlace="cartaInfantil" aria-disabled="true">✉ Carta del angelito para imprimir</a>
         </div>
       </article>
       <article class="tarjeta">
@@ -524,6 +528,7 @@ footer a{color:var(--cielo);font-weight:700}
           <span class="edad">6, 7 y 8 años</span>
           <p>Retos semanales para ser «estela de luz» para los demás: ayudar, compartir y esperar a Jesús con alegría.</p>
           <a class="btn btn-oro" href="#" data-enlace="primaria" aria-disabled="true">Ver proyecto</a>
+          <a class="carta" href="#" data-enlace="cartaPrimaria" aria-disabled="true">✉ Carta del angelito para imprimir</a>
         </div>
       </article>
       <article class="tarjeta">
@@ -611,9 +616,11 @@ footer a{color:var(--cielo);font-weight:700}
    ============================================================ */
 const ENLACES = {
   video: 'video/angelito_burlon.mp4',
-  infantil: '',
-  primaria: '',
-  familias: '',
+  infantil: 'pdf/Angelito_Burlon_Proyecto_Infantil.pdf',
+  primaria: 'pdf/Angelito_Burlon_Proyecto_1-3_Primaria.pdf',
+  familias: 'pdf/Angelito_Burlon_Familias.pdf',
+  cartaInfantil: 'pdf/Carta_Angelito_Burlon_Infantil.pdf',
+  cartaPrimaria: 'pdf/Carta_Angelito_Burlon_1-3_Primaria.pdf',
   cuentoImprimir: 'pdf/Angelito_Burlon_A4_para_imprimir.pdf'
 };
 
