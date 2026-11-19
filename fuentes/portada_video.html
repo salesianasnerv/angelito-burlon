@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- Portada (poster) del vídeo. Se convierte en video/angelito_burlon.jpg con:
+     node fuentes/portada_video.js   (abre esta página a 1280×720 y la fotografía) -->
+<html lang="es"><meta charset="utf-8">
+<style>
+@font-face{font-family:Titulo;src:url(tipos/MountainsofChristmas-Bold.ttf)}
+@font-face{font-family:Cuento;src:url(tipos/Kurale-Regular.ttf)}
+*{margin:0;box-sizing:border-box}
+body{width:1280px;height:720px;overflow:hidden;position:relative;background:#0c1542;font-family:Cuento,serif}
+.fondo{position:absolute;inset:0;background:url(../img/escenas/escena00-1600.webp) 0 50%/cover}
+.velo{position:absolute;inset:0;background:linear-gradient(90deg,transparent 30%,rgba(12,21,66,.55) 62%,rgba(12,21,66,.75)),linear-gradient(0deg,rgba(12,21,66,.55),transparent 35%)}
+.texto{position:absolute;right:70px;top:150px;width:640px;text-align:center;color:#fff6e6}
+.antetitulo{font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:#f8dc93}
+h1{font-family:Titulo;font-size:118px;line-height:.92;margin:14px 0 8px;background:linear-gradient(180deg,#fff6d0 20%,#f5c451 85%);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.sub{font-family:Titulo;font-size:56px;color:#fff6e6;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.alas{width:230px;margin:26px auto 0;display:block}
+.ver{display:inline-flex;align-items:center;gap:14px;margin-top:22px;padding:14px 30px;border-radius:99px;background:rgba(255,246,230,.12);border:2px solid #f5c451;font-size:28px;color:#fff6e6}
+.ver i{width:0;height:0;border-left:22px solid #f5c451;border-top:13px solid transparent;border-bottom:13px solid transparent}
+.logo{position:absolute;left:40px;bottom:30px;height:56px;opacity:.95}
+</style>
+<div class="fondo"></div><div class="velo"></div>
+<div class="texto">
+  <div class="antetitulo">Cuento de Adviento</div>
+  <h1>Angelito Burlón</h1>
+  <div class="sub">y la estrella de Navidad</div>
+  <div class="ver"><i></i>Ver el cuento animado</div>
+</div>
+<img class="logo" src="../img/logos/nervion-blanco.png" alt="">
+</html>

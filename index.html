@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&display=swap">
 <style>
 /* Concepto: un libro de cuentos que se abre de noche. Cielo azul profundo con polvo de estrellas,
-   páginas de papel crema para leer, y una estela dorada que recorre toda la web como el camino de luz del cuento. */
+   páginas de papel crema para leer, y un hilo dorado por el que baja el angelito mientras se lee el cuento. */
 :root{
   --noche:#0c1542;      /* cielo de fondo */
   --cielo:#1f3aa6;      /* azul acuarela del cuento */
@@ -77,13 +77,9 @@ p{margin:0}
 
 /* ---------- capas de efectos ---------- */
 #polvo{position:fixed;inset:0;pointer-events:none;z-index:70}
-#estela{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:2;overflow:visible}
-#estela path.base{fill:none;stroke:var(--oro);stroke-opacity:.16;stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round}
-#volador{position:absolute;left:0;top:0;width:clamp(64px,6vw,90px);pointer-events:none;z-index:9;will-change:transform;filter:drop-shadow(0 0 10px rgba(255,214,120,.6))}
-#estelaLuz{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2}
 
 /* ---------- navegación ---------- */
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,21,66,.72);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border-bottom:1px solid rgba(245,196,81,.18)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,21,66,.94);border-bottom:1px solid rgba(245,196,81,.18)}
 .nav .wrap{display:flex;align-items:center;gap:20px;min-height:64px}
 .nav .logo img{height:40px;width:auto}
 .nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;flex-wrap:wrap}
@@ -135,11 +131,10 @@ p{margin:0}
   .hero .wrap{grid-template-columns:1fr;padding-block:260px 80px}
   .hero .texto{grid-column:1}
   .scroll-hint{display:none}
-  #estelaLuz{opacity:.6}
-}
+  }
 
 /* ---------- corona de Adviento ---------- */
-.corona{position:relative;z-index:6;padding-block:30px 60px}
+.corona{position:relative;z-index:6;padding-block:30px clamp(110px,12vw,150px)}
 .corona .caja{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:26px 30px;border-radius:28px;background:linear-gradient(135deg,rgba(53,88,212,.35),rgba(109,63,160,.28));border:1px solid rgba(245,196,81,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 60px -30px rgba(0,0,0,.6)}
 .velas{display:flex;gap:16px;align-items:flex-end}
 .vela{width:30px;border:0;padding:0;background:none;cursor:pointer;display:grid;justify-items:center;gap:2px}
@@ -159,10 +154,10 @@ p{margin:0}
 
 /* ---------- el cuento (papel) ---------- */
 .papel{position:relative;background:var(--papel);color:var(--tinta);z-index:3}
-.papel::before,.papel::after{content:"";position:absolute;left:0;right:0;height:46px;background:var(--papel);
-  -webkit-mask:radial-gradient(34px 26px at 50% 100%,#000 98%,transparent) 0 0/68px 46px repeat-x;mask:radial-gradient(34px 26px at 50% 100%,#000 98%,transparent) 0 0/68px 46px repeat-x}
-.papel::before{top:-45px}
-.papel::after{bottom:-45px;transform:scaleY(-1)}
+.papel::before,.papel::after{content:"";position:absolute;left:0;right:0;pointer-events:none}
+/* filo del papel en curva y, encima, un par de alas con su estrella (img/alas.svg, se genera con fuentes/alas_separador.py) */
+.papel::before{bottom:calc(100% - 1px);height:clamp(96px,11vw,128px);background:url(img/alas.svg) center top/clamp(210px,22vw,300px) auto no-repeat,url(img/borde.svg) center bottom/100% clamp(34px,4vw,56px) no-repeat}
+.papel::after{top:calc(100% - 1px);height:clamp(34px,4vw,56px);background:url(img/borde.svg) center/100% 100% no-repeat;transform:scaleY(-1)}
 .cabecera{display:grid;gap:14px;max-width:760px;padding-block:70px 30px}
 .cabecera .eyebrow{color:var(--oro-ink)}
 .cabecera p{font-size:var(--s-1);color:var(--tinta-suave)}
@@ -203,16 +198,12 @@ p{margin:0}
   .paso{font-size:1.1rem;padding:20px 22px}
   .paso.activo{transform:none}
   .puntos i{width:7px;height:7px}
-  .pasos::before,.pasos::after,.hilo-estrella{display:none}
-  .flotante{opacity:.45}
+  .pasos::before,.pasos::after,.hilo-angel{display:none}
 }
 
 
 /* ---------- motion graphics del cuento ---------- */
 .cuento,.cabecera,.acciones-cuento,.credito{position:relative;z-index:1}
-.flotantes{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.flotante{position:absolute;will-change:transform;opacity:.9}
-.flotante svg{display:block;width:100%;height:auto}
 /* título que entra letra a letra y subrayado dorado que se dibuja */
 #tCuento .l{display:inline-block;transform-origin:50% 100%}
 #tCuento.entra .l{animation:ola .8s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i)*35ms)}
@@ -225,12 +216,12 @@ p{margin:0}
 .pasos{position:relative}
 .pasos::before{content:"";position:absolute;left:-28px;top:0;bottom:0;width:3px;border-radius:3px;background:var(--papel-2)}
 .pasos::after{content:"";position:absolute;left:-28px;top:0;width:3px;height:calc(var(--prog,0)*100%);border-radius:3px;background:linear-gradient(var(--oro-claro),var(--oro));box-shadow:0 0 10px rgba(245,196,81,.8)}
-.hilo-estrella{position:absolute;left:-40px;top:calc(var(--prog,0)*100%);width:27px;height:27px;translate:0 -50%;color:var(--oro);filter:drop-shadow(0 0 6px rgba(245,196,81,.9));animation:gira 6s linear infinite;z-index:2}
+.hilo-angel{position:absolute;left:-29px;top:calc(var(--prog,0)*100%);width:64px;translate:-50% -60%;rotate:18deg;z-index:2;pointer-events:none;filter:drop-shadow(0 0 10px rgba(245,196,81,.7)) drop-shadow(0 6px 10px rgba(29,36,84,.25))}
 @keyframes gira{to{rotate:360deg}}
 /* palabras que aparecen */
 .paso .w{display:inline-block}
 .paso.anima .w{animation:palabra .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--d)*28ms + 150ms)}
-@keyframes palabra{from{opacity:0;transform:translateY(.5em);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes palabra{from{opacity:0;transform:translateY(.5em)}to{opacity:1;transform:none}}
 .paso.anima .dialogo .w{animation-name:palabraPop}
 @keyframes palabraPop{0%{opacity:0;transform:scale(.4) rotate(-6deg)}70%{transform:scale(1.12)}100%{opacity:1;transform:none}}
 .paso.anima .grande{animation:rebota 1s .4s cubic-bezier(.3,1.8,.5,1) both}
@@ -268,7 +259,6 @@ p{margin:0}
 .fx-cinta{font-family:var(--f-titulo);font-size:clamp(.9rem,5cqw,1.9rem);color:var(--noche);background:linear-gradient(180deg,var(--oro-claro),var(--oro));padding:6px 22px;border-radius:6px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);clip-path:inset(0 100% 0 0);animation:cinta 1.2s .5s cubic-bezier(.65,0,.35,1) forwards;rotate:-3deg;white-space:nowrap}
 @keyframes cinta{to{clip-path:inset(0 0 0 0)}}
 /* elementos que flotan alrededor del escenario */
-.escenario{transform:perspective(1200px) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg));transition:transform .3s ease-out}
 
 /* ---------- vídeo ---------- */
 .seccion{position:relative;z-index:3;padding-block:120px 90px}
@@ -359,10 +349,9 @@ footer a{color:var(--cielo);font-weight:700}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
-  #volador,#polvo{display:none}
+  #polvo{display:none}
 }
-@media (max-width:1100px){#volador{display:none}
-}
+@media (max-width:1100px){}
 </style>
 </head>
 <body>
@@ -385,9 +374,6 @@ footer a{color:var(--cielo);font-weight:700}
 </nav>
 
 <main id="main" style="position:relative">
-<svg id="estela" aria-hidden="true"><defs><linearGradient id="gradEstela" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#ffd77a"/></linearGradient></defs><path class="base" d=""/></svg>
-<canvas id="estelaLuz" aria-hidden="true"></canvas>
-<img id="volador" src="img/personaje/angelito-vuela.webp" alt="" aria-hidden="true">
 
 <!-- PORTADA -->
 <header class="hero" id="inicio">
@@ -404,7 +390,7 @@ footer a{color:var(--cielo);font-weight:700}
       </div>
     </div>
   </div>
-  <a class="scroll-hint" href="#adviento">Baja y sigue la estela<span></span></a>
+  <a class="scroll-hint" href="#adviento">Baja y descubre el cuento<span></span></a>
 </header>
 
 <!-- CORONA -->
@@ -431,15 +417,6 @@ footer a{color:var(--cielo);font-weight:700}
 
 <!-- EL CUENTO -->
 <section class="papel" id="cuento" aria-labelledby="tCuento">
-  <div class="flotantes" aria-hidden="true">
-    <span class="flotante" data-vel="-0.25" style="left:3%;top:9%;width:46px;color:var(--oro)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.7 6.8 7.3.5-5.6 4.7 1.8 7.1L12 16.7l-6.2 3.9 1.8-7.1L2 8.8l7.3-.5z"/></svg></span>
-    <span class="flotante" data-vel="0.18" style="right:4%;top:6%;width:64px;color:#e7d2ff"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 2.5a9.5 9.5 0 1 0 6 16.8A8 8 0 0 1 15.5 2.5z"/></svg></span>
-    <span class="flotante" data-vel="-0.12" style="left:46%;top:22%;width:120px;color:#e9eefc"><svg viewBox="0 0 64 36" fill="currentColor"><path d="M18 34h32a12 12 0 0 0 0-24 14 14 0 0 0-26-2A12 12 0 0 0 18 34z"/></svg></span>
-    <span class="flotante" data-vel="0.3" style="right:2%;top:38%;width:28px;color:var(--oro)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.7 6.8 7.3.5-5.6 4.7 1.8 7.1L12 16.7l-6.2 3.9 1.8-7.1L2 8.8l7.3-.5z"/></svg></span>
-    <span class="flotante" data-vel="-0.35" style="left:1.5%;top:52%;width:34px;color:var(--mejilla)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.7 6.8 7.3.5-5.6 4.7 1.8 7.1L12 16.7l-6.2 3.9 1.8-7.1L2 8.8l7.3-.5z"/></svg></span>
-    <span class="flotante" data-vel="0.15" style="right:6%;top:68%;width:150px;color:#e9eefc"><svg viewBox="0 0 64 36" fill="currentColor"><path d="M18 34h32a12 12 0 0 0 0-24 14 14 0 0 0-26-2A12 12 0 0 0 18 34z"/></svg></span>
-    <span class="flotante" data-vel="-0.2" style="left:4%;top:84%;width:40px;color:var(--oro)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.7 6.8 7.3.5-5.6 4.7 1.8 7.1L12 16.7l-6.2 3.9 1.8-7.1L2 8.8l7.3-.5z"/></svg></span>
-  </div>
   <div class="wrap">
     <div class="cabecera">
       <span class="eyebrow">El cuento ilustrado</span>
@@ -451,24 +428,24 @@ footer a{color:var(--cielo);font-weight:700}
     <div class="cuento">
       <div class="escenario" id="escenario" aria-hidden="true">
         <figure data-i="0" class="activa"><video muted playsinline preload="none" poster="img/escenas/escena01-1600.webp"><source src="video/escenas/clip01a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="1"><video muted playsinline preload="none" poster="img/escenas/escena02-1600.webp"><source src="video/escenas/clip02.mp4" type="video/mp4"></video></figure>
-        <figure data-i="2"><video muted playsinline preload="none" poster="img/escenas/escena03-1600.webp"><source src="video/escenas/clip03a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="3"><video muted playsinline preload="none" poster="img/escenas/escena04-1600.webp"><source src="video/escenas/clip04a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="4"><video muted playsinline preload="none" poster="img/escenas/escena05-1600.webp"><source src="video/escenas/clip05a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="5"><video muted playsinline preload="none" poster="img/escenas/escena06-1600.webp"><source src="video/escenas/clip06a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="6"><video muted playsinline preload="none" poster="img/escenas/escena07-1600.webp"><source src="video/escenas/clip07a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="7"><video muted playsinline preload="none" poster="img/escenas/escena08-1600.webp"><source src="video/escenas/clip08a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="8"><video muted playsinline preload="none" poster="img/escenas/escena08_borrador-1600.webp"><source src="video/escenas/clip08b.mp4" type="video/mp4"></video></figure>
-        <figure data-i="9"><video muted playsinline preload="none" poster="img/escenas/escena09-1600.webp"><source src="video/escenas/clip09a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="10"><video muted playsinline preload="none" poster="img/escenas/escena10a-1600.webp"><source src="video/escenas/clip10a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="11"><video muted playsinline preload="none" poster="img/escenas/escena10-1600.webp"><source src="video/escenas/clip10b.mp4" type="video/mp4"></video></figure>
+        <figure data-i="1"><video muted playsinline preload="none" data-poster="img/escenas/escena02-1600.webp"><source src="video/escenas/clip02.mp4" type="video/mp4"></video></figure>
+        <figure data-i="2"><video muted playsinline preload="none" data-poster="img/escenas/escena03-1600.webp"><source src="video/escenas/clip03a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="3"><video muted playsinline preload="none" data-poster="img/escenas/escena04-1600.webp"><source src="video/escenas/clip04a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="4"><video muted playsinline preload="none" data-poster="img/escenas/escena05-1600.webp"><source src="video/escenas/clip05a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="5"><video muted playsinline preload="none" data-poster="img/escenas/escena06-1600.webp"><source src="video/escenas/clip06a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="6"><video muted playsinline preload="none" data-poster="img/escenas/escena07-1600.webp"><source src="video/escenas/clip07a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="7"><video muted playsinline preload="none" data-poster="img/escenas/escena08-1600.webp"><source src="video/escenas/clip08a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="8"><video muted playsinline preload="none" data-poster="img/escenas/escena08_borrador-1600.webp"><source src="video/escenas/clip08b.mp4" type="video/mp4"></video></figure>
+        <figure data-i="9"><video muted playsinline preload="none" data-poster="img/escenas/escena09-1600.webp"><source src="video/escenas/clip09a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="10"><video muted playsinline preload="none" data-poster="img/escenas/escena10a-1600.webp"><source src="video/escenas/clip10a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="11"><video muted playsinline preload="none" data-poster="img/escenas/escena10-1600.webp"><source src="video/escenas/clip10b.mp4" type="video/mp4"></video></figure>
         <div class="fx" id="fx"></div>
         <div class="puntos" id="puntos"></div>
         <span class="pagina" id="numPagina">1 / 12</span>
       </div>
 
       <div class="pasos" id="pasos">
-        <span class="hilo-estrella" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.7 6.8 7.3.5-5.6 4.7 1.8 7.1L12 16.7l-6.2 3.9 1.8-7.1L2 8.8l7.3-.5z"/></svg></span>
+        <img class="hilo-angel" src="img/personaje/angelito-vuela.webp" alt="" aria-hidden="true">
         <article class="paso activo" data-i="0"><div class="txt">Hace mucho, mucho tiempo, San Miguel hizo una lista con los nombres de todos los ángeles. Al final escribió el de un angelito pequeño que estaba aprendiendo a volar:<br><span class="dialogo">—Tú te llamarás <span class="nombre">Rastro de Dios</span>.</span></div></article>
         <article class="paso" data-i="1"><div class="txt">El angelito solo volaba tranquilo cuando seguía el caminito de luz que Dios dejaba a su paso. Allí movía sus alitas y sonreía feliz.</div></article>
         <article class="paso" data-i="2"><div class="txt">Cuando Dios llenó el cielo de estrellas, guardó una entre sus manos. Era pequeña, blanca y preciosa.<br><span class="dialogo">—Cuídala para mí —le dijo al angelito.</span></div></article>
@@ -689,35 +666,6 @@ if(!reducido) addEventListener('pointermove',e=>{ if(scrollY>innerHeight)return;
     else{x.beginPath();x.arc(s.x,s.y,s.r*.7,0,6.28);x.fill()}}x.globalAlpha=1;if(p.length)requestAnimationFrame(dib);else vivo=false}
 })();
 
-/* ---------- la estela dorada que recorre la web, con el angelito volando ----------
-   La curva se calcula una vez (tabla de puntos) y solo se dibuja el trozo visible en un lienzo fijo:
-   así el scroll va fluido aunque la página sea muy larga. */
-(()=>{const main=document.getElementById('main'),svg=document.getElementById('estela'),base=svg.querySelector('.base'),vol=document.getElementById('volador'),cv=document.getElementById('estelaLuz'),cx=cv.getContext('2d');
-  if(reducido){svg.style.display='none';cv.remove();vol.remove();return}
-  let PX=[],PY=[],paso=8,W=0,dpr=1;
-  function traza(){W=main.clientWidth;const H=main.scrollHeight;svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-    // la estela baja por los márgenes (fuera del texto) y cruza de un lado a otro con una curva rápida
-    const gut=Math.max(28,(W-Math.min(W,1180))/4+16),xi=gut,xd=W-gut,y0=innerHeight*.5;const tramos=Math.max(4,Math.round(H/1400));const t=(H-y0-200)/tramos;
-    let d=`M ${W*.62} ${y0} C ${W*.62} ${y0+t*.2}, ${xd} ${y0+t*.1}, ${xd} ${y0+t*.3}`;let lado=xd,y=y0+t*.3;
-    for(let i=0;i<tramos;i++){const yb=y0+t*(i+1)-t*.32;d+=` L ${lado} ${yb}`;const otro=lado===xd?xi:xd;const ye=yb+t*.3;d+=` C ${lado} ${yb+t*.2}, ${otro} ${ye-t*.2}, ${otro} ${ye}`;lado=otro;y=ye}
-    base.setAttribute('d',d);const L=base.getTotalLength();PX=[];PY=[];for(let l=0;l<=L;l+=paso){const p=base.getPointAtLength(l);PX.push(p.x);PY.push(p.y)}
-    dpr=Math.min(devicePixelRatio||1,2);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;mueve()}
-  const indiceEnY=y=>{let lo=0,hi=PY.length-1;while(lo<hi){const m=(lo+hi)>>1;if(PY[m]<y)lo=m+1;else hi=m}return lo};
-  let destino=0;
-  function dibuja(){const off=main.getBoundingClientRect().top;cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,innerWidth,innerHeight);
-    const k=Math.max(1,Math.min(PX.length-2,Math.round(destino)));
-    const ini=indiceEnY(-off-40),fin=Math.min(k,indiceEnY(-off+innerHeight+40));if(fin>ini){
-      cx.beginPath();cx.moveTo(PX[ini],PY[ini]+off);for(let i=ini+1;i<=fin;i++)cx.lineTo(PX[i],PY[i]+off);
-      cx.lineCap='round';cx.lineJoin='round';cx.strokeStyle='rgba(255,214,120,.22)';cx.lineWidth=10;cx.stroke();cx.strokeStyle='rgba(255,236,170,.95)';cx.lineWidth=2.6;cx.stroke()}
-    const a=Math.max(0,k-6),dx=PX[k]-PX[a],dy=PY[k]-PY[a];const dir=dx<0?-1:1;const ang=Math.max(-25,Math.min(25,Math.atan2(dy,Math.abs(dx)+.01)*57.3*.35));
-    const w=vol.offsetWidth;vol.style.transform=`translate(${PX[k]-w*.5}px,${PY[k]-w*.55}px) scaleX(${dir}) rotate(${ang}deg)`}
-  let pendiente=false;
-  function mueve(){if(!PY.length||pendiente)return;pendiente=true;requestAnimationFrame(()=>{pendiente=false;const off=main.getBoundingClientRect().top;destino=indiceEnY(-off+innerHeight*.6);dibuja()})}
-  addEventListener('scroll',mueve,{passive:true});addEventListener('load',traza);traza();
-  let rt,hPrev=0;new ResizeObserver(()=>{const h=main.scrollHeight;if(Math.abs(h-hPrev)<4&&W===main.clientWidth)return;hPrev=h;clearTimeout(rt);rt=setTimeout(traza,200)}).observe(main);
-  addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(traza,200)});
-})();
-
 /* ---------- motion graphics del cuento ---------- */
 (()=>{
   // título que entra letra a letra
@@ -729,12 +677,10 @@ if(!reducido) addEventListener('pointermove',e=>{ if(scrollY>innerHeight)return;
   document.querySelectorAll('.paso .txt').forEach(txt=>{let d=0;const walk=nodo=>{[...nodo.childNodes].forEach(c=>{
       if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(p=>{if(!p)return;if(/^\s+$/.test(p))f.append(p);else{const w=document.createElement('span');w.className='w';w.style.setProperty('--d',d++);w.textContent=p;f.append(w)}});c.replaceWith(f)}
       else if(c.nodeType===1&&!c.classList.contains('grande'))walk(c)})};walk(txt)});
-  // paralaje de estrellas, luna y nubes
-  const flo=[...document.querySelectorAll('.flotante')],sec=document.getElementById('cuento'),pasos=document.getElementById('pasos'),esc=document.getElementById('escenario');
+  // hilo de lectura con el angelito y ligera inclinación de la escena
+  const sec=document.getElementById('cuento'),pasos=document.getElementById('pasos'),esc=document.getElementById('escenario');
   function scroll(){const r=sec.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;
-    flo.forEach(f=>f.style.transform=`translateY(${(-r.top)*(+f.dataset.vel)}px) rotate(${(-r.top)*(+f.dataset.vel)*.15}deg)`);
-    const p=pasos.getBoundingClientRect();const prog=Math.min(1,Math.max(0,(innerHeight*.5-p.top)/p.height));pasos.style.setProperty('--prog',prog.toFixed(4));
-    if(innerWidth>860){esc.style.setProperty('--ry',((prog-.5)*-6).toFixed(2)+'deg');esc.style.setProperty('--rx',(Math.sin(prog*Math.PI*6)*1.5).toFixed(2)+'deg')}}
+    const p=pasos.getBoundingClientRect();const prog=Math.min(1,Math.max(0,(innerHeight*.5-p.top)/p.height));pasos.style.setProperty('--prog',prog.toFixed(4));}
   if(!reducido){addEventListener('scroll',()=>requestAnimationFrame(scroll),{passive:true});scroll()}
 })();
 
@@ -770,9 +716,10 @@ const FX=(()=>{const capa=document.getElementById('fx');
   pasos.forEach(()=>pts.appendChild(document.createElement('i')));const dots=[...pts.children];
   esc.classList.add('listo');let actual=0,visible=false;
   const vid=i=>figs[i].querySelector('video');
-  function reproduce(){figs.forEach((f,k)=>{const v=vid(k);if(k===actual&&visible&&!reducido){if(v.preload!=='auto'){v.preload='auto';v.load()}v.play().catch(()=>{})}else if(!v.paused)v.pause()});
+  const prepara=v=>{if(v.dataset.poster&&!v.poster)v.poster=v.dataset.poster;if(v.preload==='none'){v.preload='auto';v.load()}};
+  function reproduce(){figs.forEach((f,k)=>{const v=vid(k);if(k===actual){prepara(v);if(visible&&!reducido)v.play().catch(()=>{})}else if(!v.paused)v.pause()});
     // precarga la siguiente escena
-    const sig=figs[actual+1];if(sig){const v=sig.querySelector('video');if(v.preload==='none'){v.preload='auto';v.load()}}}
+    const sig=figs[actual+1];if(sig&&visible)prepara(sig.querySelector('video'))}
   function activa(i,origen){if(i===actual)return;const prev=figs[actual];figs.forEach(f=>f.classList.remove('saliente'));prev.classList.add('saliente');
     const r=origen&&esc.getBoundingClientRect();
     figs[i].style.setProperty('--cx',i>actual?'85%':'15%');figs[i].style.setProperty('--cy','50%');
