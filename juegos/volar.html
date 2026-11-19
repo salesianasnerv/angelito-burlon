@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ayuda al angelito a volar · Angelito Burlón</title>
+<meta name="description" content="Juego: ayuda al Angelito Burlón a llevar la estrella hasta Belén recogiendo polvo de estrellas.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{display:flex;flex-direction:column}
+#escenario{position:relative;flex:1;min-height:0;touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.progreso{position:absolute;left:50%;top:12px;translate:-50% 0;width:min(520px,calc(100% - 32px));height:14px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(245,196,81,.35);z-index:3;pointer-events:none}
+.progreso i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,rgba(245,196,81,.3),var(--oro));width:0}
+.progreso b{position:absolute;right:-6px;top:50%;translate:0 -50%;font-size:22px;line-height:1}
+.progreso span{position:absolute;top:50%;translate:-50% -50%;font-size:18px;line-height:1;left:0;filter:drop-shadow(0 0 6px #ffd76a)}
+.ayuda{position:absolute;left:0;right:0;bottom:18px;text-align:center;font-weight:800;color:var(--oro-claro);text-shadow:0 2px 6px rgba(0,0,0,.6);z-index:3;pointer-events:none;transition:opacity .6s}
+#sonido{background:none;border:1px solid rgba(245,196,81,.4);color:var(--oro-claro);border-radius:999px;width:38px;height:38px;font-size:18px;display:grid;place-items:center;flex:none}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>Ayuda al angelito a volar</h1>
+  <span class="marca" aria-live="polite">✨ <span id="puntos">0</span></span>
+  <button id="sonido" type="button" aria-label="Quitar el sonido" aria-pressed="false">🔊</button>
+</header>
+<div id="escenario">
+  <canvas id="lienzo" aria-label="El angelito vuela por el cielo de noche hacia Belén. Toca la pantalla para que suba."></canvas>
+  <div class="progreso" aria-hidden="true"><i id="barra"></i><span id="estrellita">⭐</span><b>🏠</b></div>
+  <p class="ayuda" id="ayuda">Toca la pantalla (o pulsa la barra espaciadora) para que el angelito suba</p>
+</div>
+
+<div class="panel" id="inicio">
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-vuela.webp" alt="">
+    <h2>¡Lleva la estrella a Belén!</h2>
+    <p>Al angelito todavía le cuesta volar. Ayúdale a llegar hasta Jesús recogiendo polvo de estrellas por el camino. ¡Cuidado con las nubes!</p>
+    <div class="niveles">
+      <button class="btn" data-nivel="facil" type="button">Infantil</button>
+      <button class="btn sec" data-nivel="dificil" type="button">1.º a 3.º</button>
+    </div>
+    <p class="nota">Toca la pantalla para volar. Si chocas con una nube, el angelito pierde algunas estrellitas, pero nunca se cae.</p>
+  </div>
+</div>
+
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-risa.webp" alt="">
+    <h2>¡Has llegado a Belén!</h2>
+    <p id="textoFinal"></p>
+    <img src="../img/escenas/escena08-800.webp" alt="El angelito junto al portal de Belén, con María, José y el Niño Jesús" style="border-radius:16px">
+    <div class="niveles">
+      <button class="btn" id="otraVez" type="button">Volver a volar</button>
+      <a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(()=>{
+const cv=document.getElementById('lienzo'),cx=cv.getContext('2d'),esc=document.getElementById('escenario');
+const guarda={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const NIVELES={
+  facil:{vel:150,grav:620,salto:-300,caidaMax:230,dist:6200,nubeCada:[2.4,3.2],chispas:[.5,.8]},
+  dificil:{vel:205,grav:900,salto:-360,caidaMax:340,dist:10500,nubeCada:[1.35,2.0],chispas:[.45,.7]}};
+let W=0,H=0,dpr=1,N=NIVELES.facil,estado='inicio',t0=0,ult=0;
+let ang=null,nubes=[],chispas=[],estela=[],fondo=[],lejos=0,recorrido=0,puntos=0,golpe=0,tNube=0,tChispa=0,belen=null;
+const img=new Image();img.src='../img/personaje/angelito-vuela.webp';
+const portal=new Image();portal.src='../img/escenas/escena08-800.webp';
+function tam(){dpr=Math.min(2,devicePixelRatio||1);W=esc.clientWidth;H=esc.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+  fondo=Array.from({length:Math.round(W*H/2600)},()=>({x:Math.random()*W,y:Math.random()*H*.85,r:Math.random()*1.4+.3,f:Math.random()*6.28,p:Math.random()*.25+.05}))}
+addEventListener('resize',tam);tam();
+const escala=()=>Math.max(.62,Math.min(1.15,H/620));
+
+/* ---------- sonido (WebAudio, sin archivos) ---------- */
+let ac=null,mudo=guarda.get('angelito-mudo',false);const bS=document.getElementById('sonido');
+const pintaS=()=>{bS.textContent=mudo?'🔇':'🔊';bS.setAttribute('aria-pressed',mudo);bS.setAttribute('aria-label',mudo?'Poner el sonido':'Quitar el sonido')};pintaS();
+bS.addEventListener('click',e=>{e.stopPropagation();mudo=!mudo;guarda.set('angelito-mudo',mudo);pintaS()});
+function nota(f,d=.18,tipo='sine',vol=.12,cuando=0){if(mudo)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime+cuando,o=ac.createOscillator(),g=ac.createGain();o.type=tipo;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d+.05)}catch(e){}}
+const tin=()=>{nota(1318+Math.random()*200,.25,'triangle',.08)};
+const pluf=()=>{nota(220,.25,'sine',.12);nota(165,.3,'sine',.1,.05)};
+const fanfarria=()=>[523,659,784,1047,784,1047].forEach((f,i)=>nota(f,.35,'triangle',.1,i*.14));
+
+/* ---------- partida ---------- */
+function empieza(nivel){N=NIVELES[nivel];const s=escala();
+  ang={x:W*.24,y:H*.45,vy:0,r:30*s,rot:0,parp:0};nubes=[];chispas=[];estela=[];lejos=0;recorrido=0;puntos=0;golpe=0;tNube=1.4;tChispa=.3;belen=null;
+  document.getElementById('puntos').textContent=0;document.getElementById('inicio').hidden=true;document.getElementById('final').hidden=true;
+  document.getElementById('ayuda').style.opacity=1;estado='juego';ult=performance.now()}
+document.querySelectorAll('[data-nivel]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();guarda.set('angelito-nivel-volar',b.dataset.nivel);empieza(b.dataset.nivel)}));
+document.getElementById('otraVez').addEventListener('click',e=>{e.stopPropagation();empieza(guarda.get('angelito-nivel-volar','facil'))});
+
+function sube(){if(estado!=='juego')return;ang.vy=N.salto*Math.min(1.1,escala()+.1);nota(660,.12,'sine',.05);document.getElementById('ayuda').style.opacity=0}
+esc.addEventListener('pointerdown',e=>{e.preventDefault();sube()});
+addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();sube()}});
+
+function nuevaNube(){const s=escala(),n=2+Math.floor(Math.random()*3),bolas=[];let w=0;
+  for(let i=0;i<n;i++){const r=(26+Math.random()*22)*s;bolas.push({dx:w+r,dy:(Math.random()-.5)*16*s,r});w+=r*1.25}
+  const y=H*(.12+Math.random()*.72);nubes.push({x:W+20,y,bolas,w:w+20})}
+function nuevasChispas(){const s=escala(),y0=H*(.18+Math.random()*.6),n=3+Math.floor(Math.random()*3),forma=Math.random();
+  for(let i=0;i<n;i++)chispas.push({x:W+20+i*34*s,y:y0+(forma<.5?Math.sin(i*.9)*30*s:(i-n/2)*14*s),f:Math.random()*6,cogida:false})}
+
+function choca(n){for(const b of n.bolas){const dx=ang.x-(n.x+b.dx),dy=ang.y-(n.y+b.dy);if(dx*dx+dy*dy<(b.r+ang.r*.7)**2)return true}return false}
+
+function paso(dt){const s=escala();
+  // angelito
+  ang.vy=Math.min(N.caidaMax,ang.vy+N.grav*dt);ang.y+=ang.vy*dt;
+  if(ang.y>H-ang.r-10){ang.y=H-ang.r-10;ang.vy=N.salto*.7}           // en el suelo rebota suavemente
+  if(ang.y<ang.r+30){ang.y=ang.r+30;ang.vy=Math.max(0,ang.vy)}
+  ang.rot+=((Math.max(-.35,Math.min(.45,ang.vy/700)))-ang.rot)*Math.min(1,dt*8);
+  if(golpe>0)golpe-=dt;
+  // mundo
+  const dx=N.vel*s*dt;recorrido+=N.vel*dt;lejos+=dx;
+  const final=recorrido>=N.dist;
+  if(!final){tNube-=dt;tChispa-=dt;
+    if(tNube<=0){nuevaNube();tNube=N.nubeCada[0]+Math.random()*(N.nubeCada[1]-N.nubeCada[0])}
+    if(tChispa<=0){nuevasChispas();tChispa=N.chispas[0]*3+Math.random()*N.chispas[1]*3}}
+  for(const n of nubes){n.x-=dx;if(golpe<=0&&choca(n)){golpe=1.1;ang.vy=N.salto*.5;const perd=Math.min(puntos,3);puntos-=perd;pluf();marca();
+      for(let i=0;i<perd;i++)estela.push({x:ang.x,y:ang.y,vx:(Math.random()-.7)*160,vy:(Math.random()-.5)*160,v:1,oro:1})}}
+  nubes=nubes.filter(n=>n.x+n.w>-40);
+  for(const c of chispas){c.x-=dx;c.f+=dt*5;if(!c.cogida){const ddx=ang.x+ang.r*.6-c.x,ddy=ang.y-c.y;if(ddx*ddx+ddy*ddy<(ang.r+14*s)**2){c.cogida=true;puntos++;tin();marca();
+      for(let i=0;i<6;i++)estela.push({x:c.x,y:c.y,vx:(Math.random()-.5)*120,vy:(Math.random()-.5)*120,v:1,oro:1})}}}
+  chispas=chispas.filter(c=>c.x>-20&&!c.cogida);
+  // estela de polvo de estrellas
+  estela.push({x:ang.x-ang.r*.6,y:ang.y+ang.r*.2,vx:-dx/dt*.3-20,vy:(Math.random()-.5)*30,v:1,oro:0});
+  for(const p of estela){p.x+=p.vx*dt;p.y+=p.vy*dt;p.v-=dt*(p.oro?1.4:.9)}estela=estela.filter(p=>p.v>0);
+  // llegada a Belén
+  const prog=Math.min(1,recorrido/N.dist);document.getElementById('barra').style.width=prog*100+'%';document.getElementById('estrellita').style.left=prog*100+'%';
+  if(final){if(!belen)belen={x:W+60};belen.x-=dx;if(belen.x<W*.62&&estado==='juego'){estado='fin';llega()}}
+}
+function marca(){document.getElementById('puntos').textContent=puntos}
+function llega(){fanfarria();const mej=guarda.get('angelito-volar-record',0);if(puntos>mej)guarda.set('angelito-volar-record',puntos);
+  document.getElementById('textoFinal').textContent=`Has recogido ${puntos} ${puntos===1?'estrellita':'estrellitas'} de polvo de estrellas${puntos>mej&&mej>0?': ¡tu mejor vuelo!':'.'} Los Reyes Magos ya pueden seguir la estrella hasta Jesús.`;
+  setTimeout(()=>{document.getElementById('final').hidden=false;document.getElementById('otraVez').focus()},1400)}
+
+/* ---------- dibujo ---------- */
+function estrella5(x,y,R,r,rot=0){cx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+rot+i*Math.PI/5,rr=i%2?r:R;cx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}cx.closePath()}
+function cielo(t){const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0c1542');g.addColorStop(.6,'#1f3aa6');g.addColorStop(1,'#3558d4');cx.fillStyle=g;cx.fillRect(0,0,W,H);
+  for(const e of fondo){let x=(e.x-lejos*e.p)%W;if(x<0)x+=W;cx.globalAlpha=.45+.55*Math.abs(Math.sin(t*1.2+e.f));cx.fillStyle='#fff';cx.beginPath();cx.arc(x,e.y,e.r,0,7);cx.fill()}
+  cx.globalAlpha=1;
+  // luna
+  {const e=escala(),mx=W*.85,my=H*.15;cx.save();cx.beginPath();cx.arc(mx,my,22*e,0,7);cx.clip();cx.beginPath();cx.arc(mx,my,22*e,0,7);cx.arc(mx+9*e,my-6*e,20*e,0,7);cx.fillStyle='#ffe7a3';cx.shadowColor='#ffe7a3';cx.shadowBlur=18;cx.fill('evenodd');cx.restore()}
+  // colinas del desierto
+  for(const [p,col,al] of [[.15,'#2b3f9a',.80],[.35,'#22307e',.88]]){cx.fillStyle=col;cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W+20;x+=20){const X=x+lejos*p;cx.lineTo(x,H*al+Math.sin(X/180)*14+Math.sin(X/77)*7)}cx.lineTo(W,H);cx.fill()}
+}
+function nube(n){for(const b of n.bolas){const x=n.x+b.dx,y=n.y+b.dy,g=cx.createRadialGradient(x-b.r*.3,y-b.r*.4,b.r*.1,x,y,b.r);g.addColorStop(0,'#ffffff');g.addColorStop(.7,'#e4e8ff');g.addColorStop(1,'#b8c2f0');cx.fillStyle=g;cx.beginPath();cx.arc(x,y,b.r,0,7);cx.fill()}}
+function dibujaBelen(){if(!belen)return;const s=escala(),x=belen.x,y=H*.84;
+  cx.save();cx.fillStyle='#16205e';const casas=[[-120,40,50],[-70,60,40],[-20,80,60],[50,50,45],[100,70,38],[140,45,55]];
+  for(const [dx,h,w] of casas){cx.fillRect(x+dx*s,y-h*s,w*s,h*s+40)}
+  cx.beginPath();cx.arc(x+(-20+30)*s,y-80*s,30*s,Math.PI,0);cx.fill();
+  // portal iluminado
+  const g=cx.createRadialGradient(x+10*s,y-20*s,4,x+10*s,y-20*s,90*s);g.addColorStop(0,'rgba(255,220,130,.9)');g.addColorStop(1,'rgba(255,220,130,0)');cx.fillStyle=g;cx.beginPath();cx.arc(x+10*s,y-20*s,90*s,0,7);cx.fill();
+  cx.fillStyle='#ffd36b';cx.fillRect(x-4*s,y-36*s,28*s,36*s);cx.restore()}
+function dibuja(t){cielo(t);dibujaBelen();
+  for(const p of estela){cx.globalAlpha=Math.max(0,p.v);cx.fillStyle=p.oro?'#ffe7a3':'#f5c451';cx.beginPath();cx.arc(p.x,p.y,p.oro?3:2*p.v+.6,0,7);cx.fill()}cx.globalAlpha=1;
+  for(const c of chispas){const k=1+Math.sin(c.f)*.15,s=escala();cx.save();cx.shadowColor='#ffd76a';cx.shadowBlur=12;cx.fillStyle='#ffe58a';estrella5(c.x,c.y,10*s*k,4.5*s*k,c.f*.2);cx.fill();cx.restore()}
+  for(const n of nubes)nube(n);
+  if(!ang)return;
+  const s=escala(),w=110*s,h=w*614/680;
+  cx.save();cx.translate(ang.x,ang.y);cx.rotate(ang.rot);if(golpe>0&&Math.floor(golpe*10)%2)cx.globalAlpha=.45;
+  if(img.complete)cx.drawImage(img,-w*.5,-h*.5,w,h);
+  // la estrella que lleva
+  const sx=w*.42,sy=-h*.12;cx.shadowColor='#ffe08a';cx.shadowBlur=22;cx.fillStyle='#fffdf0';estrella5(sx,sy,13*s,6*s,t*.6);cx.fill();cx.restore();
+}
+function bucle(now){const dt=Math.min(.05,(now-ult)/1000);ult=now;if(estado==='juego'||estado==='fin')paso(dt);dibuja(now/1000);requestAnimationFrame(bucle)}
+requestAnimationFrame(n=>{ult=n;bucle(n)});
+const nv=guarda.get('angelito-nivel-volar','facil');document.querySelector(`[data-nivel="${nv}"]`).focus();
+})();
+</script>
+</body>
+</html>

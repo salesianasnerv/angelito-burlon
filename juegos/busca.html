@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Busca al angelito · Angelito Burlón</title>
+<meta name="description" content="Juego: busca al Angelito Burlón escondido en escenas llenas de detalles.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+body{background:radial-gradient(ellipse at 50% 0%,#1f3aa6 0%,var(--noche) 70%) fixed}
+main{max-width:1200px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-left)) 30px;display:grid;gap:12px;justify-items:center}
+.estado{font-family:var(--f-cuento);font-size:1.12rem;color:#dfe5ff;text-align:center;min-height:1.5em;margin:0}
+.herr{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.herr .btn{padding:9px 16px;font-size:.95rem}
+.marco{width:min(100%,calc((100vh - 214px)*1.5));width:min(100%,calc((100dvh - 214px)*1.5));max-height:calc(100vh - 210px);max-height:calc(100dvh - 210px);overflow:auto;border-radius:18px;border:3px solid rgba(245,196,81,.6);box-shadow:0 12px 40px rgba(0,0,0,.45);background:#000;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.lienzo{position:relative;width:100%;aspect-ratio:3/2;cursor:pointer;user-select:none;-webkit-user-select:none}
+.marco.zoom .lienzo{width:220%}
+.lienzo>img.fondo{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.angel{position:absolute;pointer-events:none;transform-origin:50% 100%;overflow:hidden}
+.angel img{display:block;width:100%;height:100%;object-fit:contain;object-position:50% 0}
+.angel.encontrado{animation:salta .9s ease-out forwards}
+@keyframes salta{0%{transform:translate(-50%,-100%) scale(1)}40%{transform:translate(-50%,-135%) scale(1.5)}100%{transform:translate(-50%,-120%) scale(1.35)}}
+.aro{position:absolute;border-radius:50%;pointer-events:none;border:4px solid #fff;box-shadow:0 0 0 4px var(--oro),0 0 30px #ffd76a;translate:-50% -50%;animation:aro 1s ease-out forwards}
+@keyframes aro{from{width:10px;height:10px;opacity:1}to{width:160px;height:160px;opacity:0}}
+.no{position:absolute;pointer-events:none;translate:-50% -50%;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;font-size:1rem;animation:no 1s ease-out forwards;white-space:nowrap}
+@keyframes no{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-24px)}}
+.pista{position:absolute;pointer-events:none;border-radius:50%;translate:-50% -50%;background:radial-gradient(circle,rgba(255,231,163,0) 40%,rgba(255,231,163,.55) 70%,rgba(255,231,163,0) 72%);animation:late 1.2s ease-in-out infinite}
+@keyframes late{50%{scale:1.12}}
+.pie{font-family:var(--f-cuento);color:#b9c3ee;text-align:center;max-width:640px;margin:0}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>Busca al angelito</h1>
+  <span class="marca" id="marca" aria-live="polite">0 / 0</span>
+</header>
+<main>
+  <p class="estado" id="estado" aria-live="polite">El Angelito Burlón se ha escondido. ¿Dónde está?</p>
+  <div class="marco" id="marco">
+    <div class="lienzo" id="lienzo" role="img" aria-label="Escena llena de detalles donde se esconde el angelito">
+      <img class="fondo" id="fondo" alt="" draggable="false">
+      <div class="angel" id="angel" hidden><img id="angelImg" alt="" draggable="false"></div>
+    </div>
+  </div>
+  <div class="herr">
+    <button class="btn sec" id="btnZoom" type="button" aria-pressed="false">🔍 Acercar</button>
+    <button class="btn sec" id="btnPista" type="button">💡 Pista</button>
+    <button class="btn sec" id="btnNivel" type="button">Cambiar nivel</button>
+  </div>
+  <p class="pie">Toca al angelito cuando lo encuentres. A veces solo asoma la cabecita…</p>
+</main>
+
+<div class="panel" id="inicio">
+  <div class="caja">
+    <img class="angel-p" src="../img/personaje/angelito-yo.webp" alt="" style="width:110px;margin-top:-76px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))">
+    <h2>¿Dónde está el Angelito Burlón?</h2>
+    <p>Le encanta esconderse entre la gente, detrás de las cestas o en los tejados. ¡Encuéntralo en cada escena!</p>
+    <div class="niveles">
+      <button class="btn" data-nivel="facil" type="button">Infantil</button>
+      <button class="btn sec" data-nivel="dificil" type="button">1.º a 3.º</button>
+    </div>
+    <p class="nota">En Infantil el angelito es más grande. En 1.º a 3.º es pequeñito y a veces solo asoma la cabeza.</p>
+  </div>
+</div>
+
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img src="../img/personaje/angelito-risa.webp" alt="" style="width:120px;margin-top:-80px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))">
+    <h2>¡Ji, ji, ji! ¡Me has pillado!</h2>
+    <p id="textoFinal"></p>
+    <div class="niveles">
+      <button class="btn" id="otraVez" type="button">Jugar otra vez</button>
+      <a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(()=>{
+const guarda={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+/* Escenas: x,y = punto donde se apoyan los pies del angelito (o el borde de lo que lo tapa), en fracciones de la imagen.
+   asoma:true → solo se ve la mitad de arriba (está detrás de algo). solo:'facil'|'dificil' limita el sitio a un nivel. */
+const ESCENAS=[
+ {img:'../img/juegos/busca-belen.webp',nombre:'el pueblo de Belén',sitios:[
+   {x:.764,y:.83,asoma:true},{x:.052,y:.82,asoma:true},{x:.30,y:.60,asoma:true},{x:.486,y:.124},{x:.217,y:.21,asoma:true},
+   {x:.52,y:.55,asoma:true},{x:.31,y:.82,asoma:true},{x:.807,y:.43},{x:.94,y:.73,asoma:true},{x:.095,y:.43}]},
+ {img:'../img/juegos/busca-clase.webp',nombre:'la clase',sitios:[
+   {x:.486,y:.195},{x:.63,y:.38,asoma:true},{x:.052,y:.53,asoma:true},{x:.13,y:.26},{x:.894,y:.755,asoma:true},
+   {x:.807,y:.81,asoma:true},{x:.868,y:.43,asoma:true},{x:.642,y:.90,asoma:true},{x:.082,y:.44},{x:.33,y:.495,asoma:true}]},
+ {img:'../img/juegos/busca-pastores.webp',nombre:'el campo de los pastores',sitios:[
+   {x:.217,y:.25},{x:.78,y:.51,asoma:true},{x:.365,y:.9,asoma:true},{x:.868,y:.32},{x:.19,y:.08},
+   {x:.113,y:.53,asoma:true},{x:.955,y:.39,asoma:true},{x:.608,y:.85,asoma:true},{x:.955,y:.62},{x:.694,y:.56,asoma:true}]},
+];
+const POSES=['angelito-yo','angelito-pie','angelito-risa','angelito-vuela'];
+const NIVEL={facil:{alto:.17,rondas:3,asoma:false},dificil:{alto:.095,rondas:6,asoma:true}};
+const $=id=>document.getElementById(id);
+const lienzo=$('lienzo'),fondo=$('fondo'),angel=$('angel'),angelImg=$('angelImg'),estado=$('estado'),marca=$('marca'),marco=$('marco');
+let nivel='facil',ronda=0,rondas=3,actual=null,caja=null,t0=0,fallos=0,listo=false,pistaEl=null,tPista=null,ultimos=[];
+
+let ac=null;function nota(f,d=.2,c=0,tipo='triangle'){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime+c,o=ac.createOscillator(),g=ac.createGain();o.type=tipo;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.09,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d+.05)}catch(e){}}
+
+function empieza(n){nivel=n;guarda.set('angelito-nivel-busca',n);rondas=NIVEL[n].rondas;ronda=0;fallos=0;ultimos=[];t0=performance.now();$('inicio').hidden=true;$('final').hidden=true;siguiente()}
+
+function siguiente(){ronda++;listo=false;quitaPista();
+  marca.textContent=`${ronda-1} / ${rondas}`;
+  const esc=ESCENAS[(ronda-1)%ESCENAS.length];
+  const cand=esc.sitios.filter(s=>(!s.solo||s.solo===nivel)&&!ultimos.includes(s));
+  const s=cand[Math.floor(Math.random()*cand.length)];ultimos.push(s);if(ultimos.length>4)ultimos.shift();
+  const pose=s.asoma&&NIVEL[nivel].asoma?['angelito-yo','angelito-risa'][Math.floor(Math.random()*2)]:POSES[Math.floor(Math.random()*POSES.length)];
+  actual={esc,s,asoma:!!(s.asoma&&NIVEL[nivel].asoma)};
+  const pon=()=>{const alto=NIVEL[nivel].alto;
+    angelImg.src=`../img/personaje/${pose}.webp`;
+    const ratio={'angelito-yo':443/488,'angelito-pie':573/787,'angelito-risa':806/772,'angelito-vuela':680/614}[pose];
+    const hPct=alto*100,wPct=alto*ratio*100/1.5;            // la imagen es 3:2
+    const visible=actual.asoma?.55:1;
+    angel.style.width=wPct+'%';angel.style.height=(hPct*visible)+'%';
+    angel.style.left=(s.x*100)+'%';angel.style.top=(s.y*100)+'%';
+    angel.style.transform=`translate(-50%,-100%)${Math.random()<.5?' scaleX(-1)':''}`;
+    angelImg.style.height=(100/visible)+'%';
+    angel.className='angel';angel.hidden=false;
+    caja={x:s.x,y:s.y-alto*visible/2,w:alto*ratio/1.5,h:alto*visible};
+    listo=true;estado.textContent=`Ahora está escondido en ${esc.nombre}. ¿Dónde está?`;
+    clearTimeout(tPista);tPista=setTimeout(()=>{if(listo)estado.textContent='¿Te ayudo? Pulsa «Pista».'},25000)};
+  if(!fondo.src.endsWith(esc.img.replace('..',''))){fondo.onload=pon;fondo.src=esc.img}else pon();
+}
+
+function toca(e){if(!listo)return;const r=lienzo.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+  const tolX=caja.w/2+.02,tolY=caja.h/2+.03;
+  if(Math.abs(px-caja.x)<tolX&&Math.abs(py-caja.y)<tolY){encontrado(px,py)}
+  else{fallos++;const n=document.createElement('span');n.className='no';n.textContent=['Aquí no está','¡Uy, casi!','Sigue buscando'][fallos%3];n.style.left=px*100+'%';n.style.top=py*100+'%';lienzo.appendChild(n);setTimeout(()=>n.remove(),1000);nota(220,.15,0,'sine')}}
+function encontrado(px,py){listo=false;quitaPista();clearTimeout(tPista);angel.classList.add('encontrado');
+  const a=document.createElement('span');a.className='aro';a.style.left=caja.x*100+'%';a.style.top=caja.y*100+'%';lienzo.appendChild(a);setTimeout(()=>a.remove(),1000);
+  [784,988,1175,1568].forEach((f,i)=>nota(f,.25,i*.08));marca.textContent=`${ronda} / ${rondas}`;
+  estado.textContent=['¡Ji, ji, ji! ¡Me has encontrado!','¡Qué buena vista tienes!','¡Bien! ¡Jesús está por llegar!','¡Me has pillado otra vez!'][ronda%4];
+  setTimeout(()=>{if(ronda>=rondas)fin();else siguiente()},1500)}
+function fin(){const s=Math.round((performance.now()-t0)/1000);
+  $('textoFinal').textContent=`Has encontrado al angelito ${rondas} veces en ${s<60?s+' segundos':Math.floor(s/60)+' min '+(s%60)+' s'}. ¡Tienes ojos de lince!`;
+  $('final').hidden=false;$('otraVez').focus();[523,659,784,1047].forEach((f,i)=>nota(f,.35,i*.14))}
+function quitaPista(){if(pistaEl){pistaEl.remove();pistaEl=null}}
+function pista(){if(!listo||!caja)return;quitaPista();pistaEl=document.createElement('span');pistaEl.className='pista';
+  const d=nivel==='facil'?24:30;const ox=(Math.random()-.5)*.08,oy=(Math.random()-.5)*.08;
+  pistaEl.style.left=(caja.x+ox)*100+'%';pistaEl.style.top=(caja.y+oy)*100+'%';pistaEl.style.width=d+'%';pistaEl.style.aspectRatio='1';lienzo.appendChild(pistaEl);
+  estado.textContent='Está por esta zona…';
+  if(marco.classList.contains('zoom')){const r=lienzo.getBoundingClientRect();marco.scrollTo({left:caja.x*r.width-marco.clientWidth/2,top:caja.y*r.height-marco.clientHeight/2,behavior:'smooth'})}}
+
+lienzo.addEventListener('click',toca);
+$('btnPista').addEventListener('click',pista);
+$('btnZoom').addEventListener('click',()=>{const z=marco.classList.toggle('zoom');$('btnZoom').setAttribute('aria-pressed',z);$('btnZoom').textContent=z?'🔍 Alejar':'🔍 Acercar';
+  if(z){requestAnimationFrame(()=>{marco.scrollLeft=(marco.scrollWidth-marco.clientWidth)/2;marco.scrollTop=(marco.scrollHeight-marco.clientHeight)/2})}});
+$('btnNivel').addEventListener('click',()=>{$('inicio').hidden=false});
+document.querySelectorAll('[data-nivel]').forEach(b=>b.addEventListener('click',()=>empieza(b.dataset.nivel)));
+$('otraVez').addEventListener('click',()=>empieza(nivel));
+const nv=guarda.get('angelito-nivel-busca','facil');document.querySelectorAll('[data-nivel]').forEach(b=>b.classList.toggle('sec',b.dataset.nivel!==nv));
+fondo.src=ESCENAS[0].img;
+})();
+</script>
+</body>
+</html>
