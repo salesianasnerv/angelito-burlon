@@ -328,6 +328,21 @@ p{margin:0}
 .burbuja{position:absolute;z-index:9;pointer-events:none;font-family:var(--f-titulo);font-size:1.8rem;color:var(--oro-ink);background:#fff;padding:4px 16px;border-radius:20px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4);animation:sube 1.6s ease-out forwards;white-space:nowrap}
 @keyframes sube{0%{transform:translate(-50%,0) scale(.6);opacity:0}15%{transform:translate(-50%,-30px) scale(1.05);opacity:1}100%{transform:translate(-50%,-90px) scale(1);opacity:0}}
 
+.acciones-cuento .sub-acc{margin-top:-8px;color:var(--tinta-suave);font-family:var(--f-cuento)}
+.btn-grande{font-size:1.15rem;padding:16px 32px}
+.acciones-cuento{grid-template-columns:minmax(0,1fr)}
+.descargas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px;width:100%;max-width:760px;margin-top:6px}
+.descarga{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;text-align:left;padding:14px 18px;border-radius:20px;text-decoration:none;color:var(--tinta);background:var(--papel);border:1.5px solid var(--papel-2);transition:transform .25s cubic-bezier(.3,1.6,.5,1),border-color .25s,box-shadow .25s}
+.descarga:hover{transform:translateY(-3px);border-color:var(--oro);box-shadow:0 14px 28px -18px rgba(138,90,0,.6)}
+.descarga[aria-disabled="true"]{opacity:.55;pointer-events:none}
+.descarga b{display:block;font-family:var(--f-boton);font-weight:600;font-size:1.05rem}
+.descarga small{display:block;font-size:.86rem;color:var(--tinta-suave);line-height:1.35}
+.descarga>.ic{width:22px;height:22px;fill:var(--oro-ink)}
+/* miniaturas que dicen la forma del papel */
+.forma{display:block;border-radius:4px;background:linear-gradient(135deg,#ffe7a3,#f5c451);box-shadow:0 0 0 2px #fff,0 4px 10px -4px rgba(29,36,84,.5);position:relative}
+.forma-libro{width:56px;height:30px}.forma-libro::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:rgba(138,90,0,.5)}
+.forma-a4{width:46px;height:33px;background:linear-gradient(135deg,#c9d6ff,#7f9bff)}
+@media (max-width:480px){.descarga{grid-template-columns:1fr auto;padding:14px}.descarga .forma{display:none}}
 /* tipografía redondeada para menú, botones y etiquetas */
 .nav,.nav ul a,.btn,.rb,.eyebrow,.chip,.etq,.cuenta,.cuenta span,.marcador,.scroll-hint,.ficha-juego i,.ficha-juego small,.repro .t,.vela small,.libro header,.libro footer,.edad,.pista-cuento{font-family:var(--f-boton)}
 .btn,.rb,.nav ul a{font-weight:600;letter-spacing:.02em}
@@ -536,10 +551,15 @@ footer a{color:var(--cielo);font-weight:700}
 
     <div class="acciones-cuento">
       <h3>El libro, página a página</h3>
-      <div class="botones">
-        <button class="btn btn-tinta" id="abrirLibro" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path style="fill:none" d="M4 5a2 2 0 012-2h5v17H6a2 2 0 00-2 2zM20 5a2 2 0 00-2-2h-5v17h5a2 2 0 012 2z"/></svg>Hojear el libro</button>
-        <a class="btn btn-oro" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>Abrir el cuento en PDF</a>
-        <a class="btn btn-tinta" href="#" data-enlace="cuentoImprimir" aria-disabled="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4 3.6 3.6zM4 19h16v2H4z"/></svg><span>PDF A4 para imprimir · próximamente</span></a>
+      <p class="sub-acc">Hojéalo aquí mismo, como si lo tuvieras en las manos.</p>
+      <button class="btn btn-oro btn-grande" id="abrirLibro" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path style="fill:none" d="M4 5a2 2 0 012-2h5v17H6a2 2 0 00-2 2zM20 5a2 2 0 00-2-2h-5v17h5a2 2 0 012 2z"/></svg>Hojear el libro</button>
+      <div class="descargas">
+        <a class="descarga" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener">
+          <span class="forma forma-libro" aria-hidden="true"></span>
+          <span><b>PDF formato libro</b><small>16 dobles páginas, tal como está impreso. Para leer en pantalla o proyectar.</small></span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4 3.6 3.6zM4 19h16v2H4z"/></svg></a>
+        <a class="descarga" href="#" data-enlace="cuentoImprimir" aria-disabled="true">
+          <span class="forma forma-a4" aria-hidden="true"></span>
+          <span><b>PDF A4 para imprimir</b><small>14 hojas A4 apaisadas, cada dibujo a página completa. Para el aula o para casa.</small></span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4 3.6 3.6zM4 19h16v2H4z"/></svg></a>
       </div>
     </div>
     <p class="credito" style="padding-bottom:70px">Adaptación libre del cuento «Rastro de Dios», de Montserrat del Amo (Ediciones SM, colección El Barco de Vapor). Edición: Escuelas Salesianas María Auxiliadora · Nervión · Sevilla.</p>
@@ -882,7 +902,7 @@ if(!reducido&&matchMedia('(hover:hover)').matches)document.querySelectorAll('.ta
 
 /* ---------- hojeador del libro ---------- */
 (()=>{const lib=document.getElementById('libro'),hoja=document.getElementById('hoja'),num=document.getElementById('libroNum');const total=16;let i=0;
-  const src=k=>`img/libro/doble${String(k+1).padStart(2,'0')}.webp`;
+  const src=k=>`img/libro/doble${String(k+1).padStart(2,'0')}.webp?v=2`;
   function muestra(k,dir){const vieja=hoja.querySelector('img');const im=new Image();im.src=src(k);im.alt=`Doble página ${k+1} del cuento`;hoja.appendChild(im);
     if(vieja){if(dir&&!reducido){vieja.classList.add(dir>0?'sale-izq':'sale-der');vieja.style.zIndex=2;setTimeout(()=>vieja.remove(),600)}else vieja.remove()}
     num.textContent=`${k+1} / ${total}`;if(k+1<total){new Image().src=src(k+1)}}
