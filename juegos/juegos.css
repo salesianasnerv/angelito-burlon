@@ -1,0 +1,26 @@
+/* Estilo común de los juegos del Angelito Burlón (mismos colores y letras que la web) */
+:root{--noche:#0c1542;--cielo:#1f3aa6;--oro:#f5c451;--oro-claro:#ffe7a3;--oro-ink:#8a5a00;--papel:#fff6e6;--tinta:#1d2454;--tinta-suave:#55597e;--mejilla:#ef8f86;
+  --f-titulo:"Mountains of Christmas","Kurale",Georgia,serif;--f-cuento:"Kurale",Georgia,serif;--f-ui:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:var(--noche);color:#eef1ff;font-family:var(--f-ui);min-height:100%;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%}
+button{font:inherit;cursor:pointer}
+.barra{display:flex;align-items:center;gap:12px;padding:10px max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));padding-top:max(10px,env(safe-area-inset-top));background:rgba(12,21,66,.85);border-bottom:1px solid rgba(245,196,81,.2);position:relative;z-index:5}
+.barra a.volver{display:flex;align-items:center;gap:6px;color:var(--oro-claro);text-decoration:none;font-weight:800;font-size:.95rem;padding:6px 12px 6px 8px;border-radius:999px;border:1px solid rgba(245,196,81,.4)}
+.barra a.volver:hover{background:rgba(245,196,81,.15)}
+.barra h1{font-family:var(--f-titulo);font-size:clamp(1.3rem,4vw,1.9rem);margin:0;line-height:1;color:var(--oro);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barra .marca{font-weight:800;color:var(--oro-claro);white-space:nowrap;font-variant-numeric:tabular-nums}
+.niveles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.btn{border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:1.05rem;background:var(--oro);color:var(--tinta);box-shadow:0 4px 0 #b8862a;transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #b8862a}
+.btn.sec{background:var(--papel);box-shadow:0 4px 0 #cdb98c}
+.btn[aria-pressed="true"]{outline:3px solid #fff;outline-offset:2px}
+.panel{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:rgba(12,21,66,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel[hidden]{display:none}
+.panel .caja{background:var(--papel);color:var(--tinta);border-radius:28px;padding:26px 24px;max-width:460px;width:100%;text-align:center;display:grid;gap:14px;justify-items:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.panel .caja img.angel{width:120px;margin-top:-80px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.3))}
+.panel h2{font-family:var(--f-titulo);font-size:2.1rem;line-height:1.05;margin:0;color:var(--tinta)}
+.panel p{font-family:var(--f-cuento);font-size:1.12rem;margin:0;color:var(--tinta-suave)}
+.panel .nota{font-family:var(--f-ui);font-size:.85rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--oro);outline-offset:3px}
