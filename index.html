@@ -80,7 +80,8 @@ p{margin:0}
 #estela{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:2;overflow:visible}
 #estela path.base{fill:none;stroke:var(--oro);stroke-opacity:.16;stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round}
 #estela path.luz{fill:none;stroke:url(#gradEstela);stroke-opacity:.75;stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,214,120,.9))}
-#volador{position:absolute;width:86px;left:0;top:0;pointer-events:none;z-index:5;will-change:transform;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+#volador{position:absolute;width:clamp(84px,9vw,124px);left:0;top:0;pointer-events:none;z-index:9;will-change:transform;filter:drop-shadow(0 0 14px rgba(255,214,120,.75)) drop-shadow(0 8px 14px rgba(0,0,0,.3));animation:aletea 1.6s ease-in-out infinite}
+@keyframes aletea{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -10px;rotate:3deg}}
 
 /* ---------- navegación ---------- */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,21,66,.72);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border-bottom:1px solid rgba(245,196,81,.18)}
@@ -494,7 +495,7 @@ footer a{color:var(--cielo);font-weight:700}
     <div class="cabecera">
       <span class="eyebrow">El vídeo animado</span>
       <h2 class="titulo-sec" id="tVideo">El cuento, en dibujos animados</h2>
-      <p>Tres minutos para verlo en clase o en casa, con la voz de la narradora y los personajes.</p>
+      <p>Tres minutos para verlo en clase o en casa, con la voz de la narradora y los personajes. Puedes activar los subtítulos desde el reproductor.</p>
     </div>
     <div class="pantalla" id="pantalla">
       <img src="img/escenas/escena05-1600.webp" alt="" loading="lazy">
@@ -576,6 +577,8 @@ footer a{color:var(--cielo);font-weight:700}
     </div>
     <div class="recursos" id="listaRecursos">
       <a class="recurso" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h5v17H6a2 2 0 00-2 2zM20 5a2 2 0 00-2-2h-5v17h5a2 2 0 012 2z"/></svg></span><div><h3>Cuento ilustrado</h3><p>Versión para leer en pantalla.</p><span class="chip listo">Disponible</span></div></a>
+      <a class="recurso" href="pdf/Angelito_Burlon_A4_para_imprimir.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v7H6z"/></svg></span><div><h3>Cuento para imprimir</h3><p>PDF en A4 para imprimir en el colegio o en casa.</p><span class="chip listo">Disponible</span></div></a>
+      <a class="recurso" href="#video"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 4l14 8-14 8z"/></svg></span><div><h3>Vídeo animado</h3><p>El cuento en dibujos animados, con subtítulos.</p><span class="chip listo">Disponible</span></div></a>
       <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h12"/></svg></span><div><h3>Guion para narrar</h3><p>El texto del cuento con indicaciones para contarlo en voz alta.</p><span class="chip">Próximamente</span></div></div>
       <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 16.8 6.4 20l1.4-6.3L3 9.5l6.4-.6z"/></svg></span><div><h3>La estrella para recortar</h3><p>Plantilla para que cada clase cuide su propia estrella.</p><span class="chip">Próximamente</span></div></div>
       <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></svg></span><div><h3>Láminas para colorear</h3><p>Las escenas del cuento en línea para pintar.</p><span class="chip">Próximamente</span></div></div>
@@ -612,11 +615,11 @@ footer a{color:var(--cielo);font-weight:700}
           o un enlace de YouTube.
    ============================================================ */
 const ENLACES = {
-  video: '',
+  video: 'video/angelito_burlon.mp4',
   infantil: '',
   primaria: '',
   familias: '',
-  cuentoImprimir: ''
+  cuentoImprimir: 'pdf/Angelito_Burlon_A4_para_imprimir.pdf'
 };
 
 const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -633,7 +636,7 @@ if(ENLACES.video){
   const p=document.getElementById('pantalla'); const v=ENLACES.video;
   const yt=v.match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/);
   p.innerHTML = yt ? `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}" title="Vídeo Angelito Burlón" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
-                   : `<video src="${v}" controls preload="metadata" poster="img/escenas/escena05-1600.webp"></video>`;
+                   : `<video controls playsinline preload="metadata" poster="video/angelito_burlon.jpg"><source src="${v}" type="video/mp4"><track kind="subtitles" srclang="es" label="Español" src="video/angelito_burlon.vtt"></video>`;
 }
 
 /* ---------- menú móvil y sección activa ---------- */
@@ -683,10 +686,14 @@ if(!reducido) addEventListener('pointermove',e=>{ if(scrollY>innerHeight)return;
     const y0=innerHeight*.55,margen=Math.min(60,W*.06);let d=`M ${W*.62} ${y0}`;const tramos=Math.max(6,Math.round(H/700));const paso=(H-y0-200)/tramos;
     for(let i=1;i<=tramos;i++){const izq=i%2===1;const xe=izq?margen:W-margen;const ye=y0+paso*i;d+=` C ${izq?W*.9:W*.1} ${ye-paso*.75}, ${izq?W*.1:W*.9} ${ye-paso*.35}, ${xe} ${ye}`}
     base.setAttribute('d',d);luz.setAttribute('d',d);L=luz.getTotalLength();luz.style.strokeDasharray=L;mueve()}
-  function mueve(){const H=main.scrollHeight;const prog=Math.min(1,Math.max(0,(scrollY+innerHeight*.5)/(H)));const l=L*Math.min(1,prog*1.04);luz.style.strokeDashoffset=L-l;
-    const pt=luz.getPointAtLength(l),pt2=luz.getPointAtLength(Math.min(L,l+4));const dir=pt2.x<pt.x?-1:1;vol.style.transform=`translate(${pt.x-43}px,${pt.y-60}px) scaleX(${dir})`}
+  // el angelito vuela siempre a la altura de lo que se está leyendo (algo por encima de la mitad de la pantalla)
+  function largoEnY(y){let lo=0,hi=L;for(let k=0;k<22;k++){const m=(lo+hi)/2;if(luz.getPointAtLength(m).y<y)lo=m;else hi=m}return lo}
+  function mueve(){if(!L)return;const top=main.getBoundingClientRect().top+scrollY;const objetivo=scrollY-top+innerHeight*.42;
+    const l=largoEnY(objetivo);luz.style.strokeDashoffset=L-l;
+    const pt=luz.getPointAtLength(l),pt2=luz.getPointAtLength(Math.min(L,l+4));const dir=pt2.x<pt.x?-1:1;
+    const w=vol.offsetWidth;const x=Math.min(Math.max(pt.x-w/2,8),main.clientWidth-w-8);vol.style.transform=`translate(${x}px,${pt.y-w*.7}px) scaleX(${dir})`}
   if(reducido){svg.style.display='none';return}
-  addEventListener('scroll',()=>requestAnimationFrame(mueve),{passive:true});addEventListener('resize',traza);addEventListener('load',traza);traza();setTimeout(traza,1500);
+  addEventListener('scroll',()=>requestAnimationFrame(mueve),{passive:true});addEventListener('load',traza);traza();let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(traza,150)}).observe(main);
 })();
 
 

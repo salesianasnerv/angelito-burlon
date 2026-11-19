@@ -13,7 +13,8 @@ Vercel la publica tal cual, sin compilar nada.
 | `img/libro/` | Las 16 dobles páginas del libro para el hojeador. |
 | `img/personaje/` | El angelito recortado (fondo transparente) para el juego y la estela. |
 | `img/logos/` | Logo del colegio (Nervión) en color y en blanco. |
-| `pdf/` | Cuento en PDF (vista previa de pantalla). |
+| `pdf/` | Cuento en PDF: vista previa de pantalla y A4 para imprimir. |
+| `video/angelito_burlon.*` | Vídeo final (720p), subtítulos .vtt y póster. Se rehace con `fuentes/video_web.sh`. |
 | `video/escenas/` | Clips animados del vídeo (Flow), mudos y ligeros, que se ven en la portada y en el cuento. |
 | `icons/`, `favicon.ico`, `img/og.jpg` | Iconos de la app, favicon e imagen para compartir por WhatsApp. |
 | `manifest.webmanifest`, `sw.js` | Hacen que la web se pueda instalar como app (PWA). Sube `VERSION` en `sw.js` en cada cambio. |
