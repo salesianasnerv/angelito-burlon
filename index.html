@@ -139,8 +139,12 @@ p{margin:0}
 @media (max-width:760px){
   .hero{min-height:auto;align-items:flex-end}
   .hero .fondo img,.hero .fondo video{object-position:8% 50%}
-  .hero::after{background:linear-gradient(0deg,var(--noche) 8%,rgba(12,21,66,.8) 45%,rgba(12,21,66,0) 72%)}
-  .hero .wrap{grid-template-columns:1fr;padding-block:260px 80px}
+  /* en el móvil la ilustración va arriba y el texto debajo, para que se vea el angelito */
+  .hero{--alto:min(96vw,460px);background:var(--noche)}
+  .hero .fondo{inset:0 0 auto 0;height:var(--alto);transform:none}
+  .hero .fondo img,.hero .fondo video{object-position:4% 50%}
+  .hero::after{background:linear-gradient(180deg,rgba(12,21,66,0) calc(var(--alto)*.55),var(--noche) calc(var(--alto) - 4px))}
+  .hero .wrap{grid-template-columns:1fr;padding-block:calc(var(--alto) - 40px) 80px}
   .hero .texto{grid-column:1}
   .scroll-hint{display:none}
   }
@@ -352,6 +356,24 @@ p{margin:0}
 .forma-libro{width:56px;height:30px}.forma-libro::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1.5px;background:rgba(138,90,0,.5)}
 .forma-a4{width:46px;height:33px;background:linear-gradient(135deg,#c9d6ff,#7f9bff)}
 @media (max-width:480px){.descarga{grid-template-columns:1fr auto;padding:14px}.descarga .forma{display:none}}
+/* botones grandes de la portada */
+.hb{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:14px;min-height:70px;padding:10px 30px 10px 12px;border-radius:999px;text-decoration:none;font-family:var(--f-boton);font-weight:700;font-size:1.3rem;line-height:1.05;transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .3s}
+.hb small{display:block;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.8;margin-bottom:3px}
+.hb:hover{transform:translateY(-4px) rotate(-1deg)}
+.hb::before{content:"";position:absolute;left:50%;bottom:calc(100% - 14px);width:150px;height:50px;background:url(img/alas.webp) center bottom/contain no-repeat;translate:-50% 12px;scale:.5;opacity:0;transition:opacity .3s,translate .4s,scale .4s;z-index:-1;pointer-events:none}
+.hb:hover::before{opacity:1;translate:-50% 0;scale:1}
+.hb-cuento{color:var(--noche);background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.75) 50%,transparent 60%) 160% 0/250% 100% no-repeat,linear-gradient(180deg,#fff3c9,var(--oro-claro) 35%,var(--oro));
+  box-shadow:inset 0 1px 0 #fff,inset 0 -4px 0 rgba(138,90,0,.25),0 0 0 4px rgba(245,196,81,.25),0 16px 40px -10px rgba(245,196,81,.9);transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .3s,background-position .9s}
+.hb-cuento:hover{background-position:-60% 0,0 0}
+.hb-cuento img{width:58px;height:58px;object-fit:cover;object-position:50% 12%;border-radius:50%;background:radial-gradient(circle,#fff,#ffe7a3);box-shadow:0 0 0 3px #fff,0 6px 14px -4px rgba(138,90,0,.6);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.hb-cuento:hover img{transform:rotate(-10deg) scale(1.1)}
+.hb-video{color:#fff6e6;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.06));border:2px solid rgba(255,231,163,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px -14px rgba(0,0,0,.7)}
+.hb-video:hover{border-color:var(--oro-claro);background:linear-gradient(180deg,rgba(255,231,163,.3),rgba(255,231,163,.08))}
+.hb-play{position:relative;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#fff6e6;color:var(--noche);box-shadow:0 0 0 0 rgba(255,231,163,.6);animation:onda 2.2s ease-out infinite}
+.hb-play svg{width:22px;height:22px;fill:currentColor;translate:2px 0}
+@keyframes onda{0%{box-shadow:0 0 0 0 rgba(255,231,163,.55)}100%{box-shadow:0 0 0 16px rgba(255,231,163,0)}}
+@media (max-width:480px){.hb{font-size:1.12rem;min-height:62px;padding-right:22px}.hb-cuento img{width:48px;height:48px}.hb-play{width:44px;height:44px}}
+@media (prefers-reduced-motion:reduce){.hb-play{animation:none}}
 /* tipografía redondeada para menú, botones y etiquetas */
 .nav,.nav ul a,.btn,.rb,.eyebrow,.chip,.etq,.cuenta,.cuenta span,.marcador,.scroll-hint,.ficha-juego i,.ficha-juego small,.repro .t,.vela small,.libro header,.libro footer,.edad,.pista-cuento{font-family:var(--f-boton)}
 .btn,.rb,.nav ul a{font-weight:700;letter-spacing:.01em}
@@ -483,8 +505,8 @@ footer a{color:var(--cielo);font-weight:700}
       <h1 class="oro-texto" id="tituloHero" aria-label="Angelito Burlón y la estrella de Navidad">Angelito Burlón<span class="sub">y la estrella de Navidad</span></h1>
       <p class="intro">Rastro de Dios es un angelito pequeño que todavía está aprendiendo a volar. Un día, Dios le pide que cuide una estrella muy especial… ¿Adónde la llevará?</p>
       <div class="botones">
-        <a class="btn btn-oro" href="#cuento"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>Leer el cuento</a>
-        <a class="btn btn-vidrio" href="#video"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>Ver el vídeo</a>
+        <a class="hb hb-cuento" href="#cuento"><img src="img/personaje/angelito-yo.webp" alt="" aria-hidden="true"><span><small>Empieza aquí</small>Leer el cuento</span></a>
+        <a class="hb hb-video" href="#video"><span class="hb-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg></span><span><small>3 minutos</small>Ver el vídeo</span></a>
       </div>
     </div>
   </div>
@@ -847,8 +869,13 @@ const FX=(()=>{const capa=document.getElementById('fx');
   pasos.forEach(()=>pts.appendChild(document.createElement('i')));const dots=[...pts.children];
   esc.classList.add('listo');let actual=0,visible=false;
   const vid=i=>figs[i].querySelector('video');
-  const prepara=v=>{if(v.dataset.poster&&!v.poster)v.poster=v.dataset.poster;if(v.preload==='none'){v.preload='auto';v.load()}};
-  function reproduce(){figs.forEach((f,k)=>{const v=vid(k);if(k===actual){prepara(v);if(visible&&!reducido)v.play().catch(()=>{})}else if(!v.paused)v.pause()});
+  // en el móvil: carteles pequeños y solo 3 clips cargados a la vez (si no, Safari se queda sin memoria)
+  const movil=matchMedia('(max-width:900px)').matches,cartel=u=>movil?u.replace('-1600.','-800.'):u;
+  const prepara=v=>{const p=v.dataset.poster||v.getAttribute('poster');if(p&&!v.dataset.cartel){v.poster=cartel(p);v.dataset.cartel=1}
+    const s=v.querySelector('source');if(s.dataset.src){s.src=s.dataset.src;delete s.dataset.src;v.preload='none'}
+    if(v.preload==='none'){v.preload='auto';v.load()}};
+  const suelta=v=>{const s=v.querySelector('source');if(s.dataset.src||v.preload==='none')return;v.pause();s.dataset.src=s.getAttribute('src');s.removeAttribute('src');v.preload='none';v.load()};
+  function reproduce(){figs.forEach((f,k)=>{const v=vid(k);if(k===actual){prepara(v);if(visible&&!reducido)v.play().catch(()=>{})}else{if(!v.paused)v.pause();if(Math.abs(k-actual)>1)suelta(v)}});
     // precarga la siguiente escena
     const sig=figs[actual+1];if(sig&&visible)prepara(sig.querySelector('video'))}
   function activa(i,origen){if(i===actual)return;const prev=figs[actual];figs.forEach(f=>f.classList.remove('saliente'));prev.classList.add('saliente');
@@ -869,6 +896,7 @@ const FX=(()=>{const capa=document.getElementById('fx');
 
 /* ---------- portada: clip animado de fondo ---------- */
 (()=>{const v=document.getElementById('videoHero');if(reducido){v.remove();return}
+  if(matchMedia('(max-width:900px)').matches)v.poster='img/escenas/escena00-800.webp';
   v.addEventListener('playing',()=>v.classList.add('lista'),{once:true});
   // se reproduce una sola vez y se queda en el último fotograma
   new IntersectionObserver(es=>{if(v.ended)return;es[0].isIntersecting?v.play().catch(()=>{}):v.pause()}).observe(v);
