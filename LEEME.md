@@ -14,6 +14,9 @@ Vercel la publica tal cual, sin compilar nada.
 | `img/personaje/` | El angelito recortado (fondo transparente) para el juego y la estela. |
 | `img/logos/` | Logo del colegio (Nervión) en color y en blanco. |
 | `pdf/` | Cuento en PDF (vista previa de pantalla). |
+| `video/escenas/` | Clips animados del vídeo (Flow), mudos y ligeros, que se ven en la portada y en el cuento. |
+| `icons/`, `favicon.ico`, `img/og.jpg` | Iconos de la app, favicon e imagen para compartir por WhatsApp. |
+| `manifest.webmanifest`, `sw.js` | Hacen que la web se pueda instalar como app (PWA). Sube `VERSION` en `sw.js` en cada cambio. |
 | `fuentes/` | Script que genera todas las imágenes a partir de los originales y el logo original. |
 
 ## Cómo añadir lo que vaya estando listo
@@ -35,11 +38,15 @@ Los recursos de la sección «Más cosas del Angelito» se editan directamente e
 
 ## Volver a generar las imágenes
 
-Desde esta carpeta: `python3 fuentes/preparar_imagenes.py fuentes/logo_nervion.png`
+Desde esta carpeta:
+- `python3 fuentes/preparar_imagenes.py fuentes/logo_nervion.png` (escenas, libro, personaje, logos)
+- `python3 fuentes/iconos_y_og.py` (favicon, iconos e imagen para compartir)
+- `bash fuentes/clips_web.sh "…/Angelito burlón/Montaje/Video/Flow/renombrados"` (clips animados; necesita ffmpeg)
 (necesita Python con Pillow y `poppler-utils`; lee las escenas y los PDF del proyecto).
 
 ## Notas
 
+- La imagen para compartir apunta a `https://angelito-burlon.vercel.app`. Si Vercel le da otra dirección, cámbiala en las etiquetas `og:` de `index.html`.
 - La web lleva `noindex` para que Google no la indexe mientras es borrador (quitar la etiqueta `robots` cuando se publique).
 - El cuento es una adaptación libre de «Rastro de Dios», de Montserrat del Amo (Ediciones SM): antes de difundir la web
   fuera del colegio conviene confirmar el permiso de uso público.
