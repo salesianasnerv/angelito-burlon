@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Angelito Burlón</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Angelito Burlón y la estrella de Navidad: el cuento ilustrado, el vídeo y los proyectos de Adviento para Infantil, 1.º a 3.º de Primaria y familias. Escuelas Salesianas María Auxiliadora · Nervión.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0c1542">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Angelito Burlón y la estrella de Navidad">
+<meta property="og:description" content="Un cuento tierno para preparar con alegría la llegada de Jesús. Adviento 2026.">
+<meta property="og:image" content="img/escenas/escena00-1600.webp">
+<meta property="og:locale" content="es_ES">
+<link rel="icon" type="image/webp" href="img/personaje/angelito-yo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:ital,wght@0,400;0,600;0,800;1,400&display=swap">
+<style>
+/* Concepto: un libro de cuentos que se abre de noche. Cielo azul profundo con polvo de estrellas,
+   páginas de papel crema para leer, y una estela dorada que recorre toda la web como el camino de luz del cuento. */
+:root{
+  --noche:#0c1542;      /* cielo de fondo */
+  --cielo:#1f3aa6;      /* azul acuarela del cuento */
+  --cielo-2:#3558d4;
+  --oro:#f5c451;        /* estela y estrellas */
+  --oro-claro:#ffe7a3;
+  --oro-ink:#8a5a00;    /* oro legible sobre papel */
+  --papel:#fff6e6;      /* páginas */
+  --papel-2:#fbe9cc;
+  --tinta:#1d2454;      /* texto sobre papel */
+  --tinta-suave:#55597e;
+  --mejilla:#ef8f86;    /* rubor del angelito, acento cálido */
+  --morado:#6d3fa0;     /* velas de Adviento */
+  --texto-noche:#eef1ff;
+  --texto-noche-suave:#b9c3ee;
+  --f-titulo:"Mountains of Christmas","Kurale",Georgia,serif;
+  --f-cuento:"Kurale",Georgia,"Times New Roman",serif;
+  --f-ui:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --s-0:1rem; --s-1:1.2rem; --s-2:1.5rem; --s-3:2.1rem; --s-4:clamp(2.4rem,6vw,3.6rem); --s-5:clamp(3.2rem,10vw,6.4rem);
+  --gutter-l:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--noche)}
+body{margin:0;background:var(--noche);color:var(--texto-noche);font-family:var(--f-ui);font-size:var(--s-0);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--noche)}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+a{color:inherit}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+:focus-visible{outline:3px solid var(--oro);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.eyebrow{font-family:var(--f-ui);font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+.titulo-sec{font-family:var(--f-titulo);font-size:var(--s-4);line-height:1.05}
+.oro-texto{background:linear-gradient(100deg,var(--oro) 0%,var(--oro-claro) 35%,#fff 50%,var(--oro-claro) 65%,var(--oro) 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:brillo 6s linear infinite}
+@keyframes brillo{to{background-position:-250% 0}}
+
+/* ---------- capas de efectos ---------- */
+#polvo{position:fixed;inset:0;pointer-events:none;z-index:70}
+#estela{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:2;overflow:visible}
+#estela path.base{fill:none;stroke:var(--oro);stroke-opacity:.16;stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round}
+#estela path.luz{fill:none;stroke:url(#gradEstela);stroke-opacity:.75;stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,214,120,.9))}
+#volador{position:absolute;width:86px;left:0;top:0;pointer-events:none;z-index:5;will-change:transform;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+
+/* ---------- navegación ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,21,66,.72);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border-bottom:1px solid rgba(245,196,81,.18)}
+.nav .wrap{display:flex;align-items:center;gap:20px;min-height:64px}
+.nav .logo img{height:40px;width:auto}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;flex-wrap:wrap}
+.nav ul a{display:block;padding:8px 12px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;color:var(--texto-noche-suave);transition:color .2s,background .2s}
+.nav ul a:hover,.nav ul a.activo{color:var(--noche);background:var(--oro)}
+.contador{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:999px;background:rgba(245,196,81,.14);border:1px solid rgba(245,196,81,.4);font-weight:800;font-size:.85rem;color:var(--oro-claro);white-space:nowrap}
+.contador img{width:26px;height:26px;object-fit:contain}
+.menu-btn{display:none;margin-left:auto;background:none;border:1px solid rgba(245,196,81,.45);color:var(--oro-claro);border-radius:10px;padding:6px 10px;font:inherit;font-weight:800}
+@media (max-width:860px){
+  .menu-btn{display:block}
+  .nav ul{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--noche);padding:10px var(--gutter-r) 16px var(--gutter-l);border-bottom:1px solid rgba(245,196,81,.2)}
+  .nav.abierto ul{display:flex}
+  .contador{order:2}
+}
+
+/* ---------- portada ---------- */
+.hero{position:relative;overflow:hidden;isolation:isolate;min-height:min(88vh,820px);display:flex;align-items:center}
+.hero .fondo{position:absolute;inset:-4%;z-index:-2;background:var(--cielo) center/cover no-repeat;transform:translate3d(var(--px,0),var(--py,0),0) scale(1.06);transition:transform .4s ease-out}
+.hero .fondo img{width:100%;height:100%;object-fit:cover;object-position:20% 50%;animation:respira 22s ease-in-out infinite alternate}
+@keyframes respira{from{transform:scale(1)}to{transform:scale(1.07)}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(12,21,66,0) 25%,rgba(12,21,66,.55) 60%,rgba(12,21,66,.8)),linear-gradient(0deg,var(--noche) 0%,rgba(12,21,66,0) 30%)}
+#estrellasHero{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.hero .wrap{width:100%;display:grid;grid-template-columns:1fr minmax(0,560px);padding-block:90px 110px}
+.hero .texto{grid-column:2;display:grid;gap:22px}
+.hero .eyebrow{color:var(--oro-claro)}
+.hero h1{font-family:var(--f-titulo);font-size:var(--s-5);line-height:.95;letter-spacing:.01em;filter:drop-shadow(0 4px 18px rgba(0,0,0,.35))}
+.hero h1 .sub{display:block;font-size:.42em;margin-top:.25em;color:var(--oro-claro);-webkit-text-fill-color:var(--oro-claro)}
+.hero h1 .letra{display:inline-block;background:inherit;background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cae .9s cubic-bezier(.2,.9,.3,1.3) both,brillo 6s linear infinite;animation-delay:calc(var(--i)*45ms),calc(var(--i)*120ms);}
+@keyframes cae{from{transform:translateY(-.5em) rotate(-8deg)}to{transform:none}}
+.hero p.intro{font-family:var(--f-cuento);font-size:var(--s-1);color:var(--texto-noche);max-width:34em;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.botones{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:inherit;font-weight:800;text-decoration:none;cursor:pointer;border:0;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-oro{background:linear-gradient(180deg,var(--oro-claro),var(--oro));color:var(--noche);box-shadow:0 8px 28px -6px rgba(245,196,81,.7)}
+.btn-oro:hover{box-shadow:0 12px 36px -6px rgba(245,196,81,.9)}
+.btn-vidrio{background:rgba(255,255,255,.1);color:var(--texto-noche);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px)}
+.btn-tinta{background:var(--tinta);color:var(--papel)}
+.btn[aria-disabled="true"]{opacity:.6;cursor:default;transform:none}
+.btn svg{width:18px;height:18px}
+.scroll-hint{position:absolute;bottom:22px;left:50%;translate:-50% 0;color:var(--oro-claro);font-size:.85rem;font-weight:700;display:grid;justify-items:center;gap:4px;text-decoration:none}
+.scroll-hint span{width:2px;height:28px;background:linear-gradient(var(--oro),transparent);animation:baja 1.8s ease-in-out infinite}
+@keyframes baja{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media (max-width:760px){
+  .hero{min-height:auto;align-items:flex-end}
+  .hero .fondo img{object-position:8% 50%}
+  .hero::after{background:linear-gradient(0deg,var(--noche) 8%,rgba(12,21,66,.8) 45%,rgba(12,21,66,0) 72%)}
+  .hero .wrap{grid-template-columns:1fr;padding-block:260px 80px}
+  .hero .texto{grid-column:1}
+  .scroll-hint{display:none}
+  #estela path.luz{stroke-opacity:.5}
+}
+
+/* ---------- corona de Adviento ---------- */
+.corona{position:relative;z-index:6;padding-block:30px 60px}
+.corona .caja{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:26px 30px;border-radius:28px;background:linear-gradient(135deg,rgba(53,88,212,.35),rgba(109,63,160,.28));border:1px solid rgba(245,196,81,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 60px -30px rgba(0,0,0,.6)}
+.velas{display:flex;gap:16px;align-items:flex-end}
+.vela{width:30px;border:0;padding:0;background:none;cursor:pointer;display:grid;justify-items:center;gap:2px}
+.vela .llama{width:14px;height:22px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff 0 18%,var(--oro-claro) 30%,var(--oro) 60%,rgba(245,120,40,.9));box-shadow:0 0 18px 6px rgba(245,196,81,.55);transform-origin:50% 100%;animation:titila 1.4s ease-in-out infinite alternate;transition:opacity .4s,transform .4s}
+.vela:not(.encendida) .llama{opacity:.08;box-shadow:none;animation:none;transform:scale(.6)}
+.vela .cuerpo{width:22px;height:var(--h,60px);border-radius:5px 5px 3px 3px;background:linear-gradient(90deg,#4c2a7d,var(--morado) 45%,#8f63c6);box-shadow:inset 0 -6px 0 rgba(0,0,0,.15)}
+.vela.rosa .cuerpo{background:linear-gradient(90deg,#b5516e,#e07b97 45%,#f4a8bc)}
+.vela small{font-size:.7rem;font-weight:800;color:var(--texto-noche-suave)}
+@keyframes titila{from{transform:rotate(-3deg) scaleY(1)}to{transform:rotate(3deg) scaleY(1.12)}}
+.corona h2{font-family:var(--f-titulo);font-size:var(--s-3);line-height:1.1;color:var(--oro-claro)}
+.corona p{color:var(--texto-noche-suave)}
+.cuenta{display:flex;gap:10px}
+.cuenta div{min-width:86px;text-align:center;padding:10px 12px;border-radius:18px;background:rgba(12,21,66,.55);border:1px solid rgba(255,255,255,.12)}
+.cuenta b{display:block;font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--oro)}
+.cuenta span{font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-noche-suave)}
+@media (max-width:860px){.corona .caja{grid-template-columns:1fr;justify-items:start}}
+
+/* ---------- el cuento (papel) ---------- */
+.papel{position:relative;background:var(--papel);color:var(--tinta);z-index:3}
+.papel::before,.papel::after{content:"";position:absolute;left:0;right:0;height:46px;background:var(--papel);
+  -webkit-mask:radial-gradient(34px 26px at 50% 100%,#000 98%,transparent) 0 0/68px 46px repeat-x;mask:radial-gradient(34px 26px at 50% 100%,#000 98%,transparent) 0 0/68px 46px repeat-x}
+.papel::before{top:-45px}
+.papel::after{bottom:-45px;transform:scaleY(-1)}
+.cabecera{display:grid;gap:14px;max-width:760px;padding-block:70px 30px}
+.cabecera .eyebrow{color:var(--oro-ink)}
+.cabecera p{font-size:var(--s-1);color:var(--tinta-suave)}
+.cuento{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;padding-bottom:40px}
+.escenario{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);height:min(62vh,560px);border-radius:28px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(29,36,84,.6),0 0 0 8px #fff,0 0 0 9px var(--papel-2);background:var(--cielo)}
+.escenario figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .9s ease}
+.escenario figure:first-child{opacity:1}
+.escenario.listo figure{opacity:0}
+.escenario.listo figure.activa{opacity:1}
+.escenario img{width:100%;height:100%;object-fit:cover;transform:scale(1.12);transition:transform 7s ease-out}
+.escenario figure.activa img{transform:scale(1)}
+.escenario .pagina{position:absolute;right:14px;bottom:14px;padding:6px 12px;border-radius:999px;background:rgba(12,21,66,.7);color:var(--oro-claro);font-weight:800;font-size:.8rem;font-variant-numeric:tabular-nums}
+.pasos{display:grid;gap:34vh;padding-block:8vh 30vh}
+.paso{font-family:var(--f-cuento);font-size:clamp(1.15rem,1.6vw,1.4rem);line-height:1.65;padding:26px 28px;border-radius:22px;background:#fff;box-shadow:0 18px 40px -24px rgba(29,36,84,.35);border:1px solid var(--papel-2);transition:transform .5s,box-shadow .5s;transform:translateX(0)}
+.paso.activo{transform:translateX(-8px);box-shadow:0 24px 50px -20px rgba(29,36,84,.45),inset 4px 0 0 var(--oro)}
+.paso .dialogo{color:var(--cielo)}
+.paso .nombre{color:#c2412d}
+.paso .grande{display:block;font-family:var(--f-titulo);font-size:2.6rem;line-height:1.1;color:var(--oro-ink)}
+.paso .mini{display:none}
+.acciones-cuento{display:flex;flex-wrap:wrap;gap:12px;padding-bottom:90px}
+.credito{font-size:.85rem;color:var(--tinta-suave);max-width:60ch}
+@media (max-width:860px){
+  .cuento{grid-template-columns:1fr;gap:0}
+  .escenario{display:none}
+  .pasos{gap:22px;padding-block:10px 30px}
+  .paso{padding:0;overflow:hidden}
+  .paso .mini{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+  .paso .txt{padding:20px 22px 24px}
+  .paso.activo{transform:none}
+}
+
+/* ---------- vídeo ---------- */
+.seccion{position:relative;z-index:3;padding-block:120px 90px}
+.seccion .cabecera{padding-top:0}
+.seccion .cabecera .eyebrow{color:var(--oro)}
+.seccion .cabecera p{color:var(--texto-noche-suave)}
+.pantalla{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(245,196,81,.35),0 40px 100px -30px rgba(53,88,212,.8)}
+.pantalla img,.pantalla video,.pantalla iframe{width:100%;height:100%;object-fit:cover;border:0}
+.pantalla .velo{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:16px;text-align:center;background:radial-gradient(circle at 50% 50%,rgba(12,21,66,.25),rgba(12,21,66,.8));padding:20px}
+.play{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);border:2px solid var(--oro-claro);backdrop-filter:blur(6px);animation:late 2.4s ease-in-out infinite}
+.play svg{width:34px;height:34px;margin-left:6px;fill:var(--oro-claro)}
+@keyframes late{0%,100%{box-shadow:0 0 0 0 rgba(245,196,81,.5)}50%{box-shadow:0 0 0 22px rgba(245,196,81,0)}}
+.pantalla .velo b{font-family:var(--f-titulo);font-size:var(--s-3);color:#fff}
+.pantalla .velo span{color:var(--texto-noche-suave);font-weight:600}
+@media (max-width:600px){.pantalla .velo span{display:none}.play{width:64px;height:64px}}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:rgba(245,196,81,.18);color:var(--oro-claro);border:1px solid rgba(245,196,81,.4)}
+.chip.listo{background:rgba(120,220,160,.18);color:#bff3d2;border-color:rgba(120,220,160,.45)}
+
+/* ---------- proyectos ---------- */
+.tarjetas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.tarjeta{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(180deg,rgba(53,88,212,.4),rgba(12,21,66,.9));border:1px solid rgba(255,255,255,.14);transform-style:preserve-3d;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out,box-shadow .3s;display:flex;flex-direction:column}
+.tarjeta:hover{box-shadow:0 30px 70px -30px rgba(245,196,81,.55)}
+.tarjeta::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(255,231,163,.22),transparent 45%);opacity:0;transition:opacity .3s}
+.tarjeta:hover::after{opacity:1}
+.tarjeta .img{aspect-ratio:16/10;overflow:hidden}
+.tarjeta .img img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.tarjeta:hover .img img{transform:scale(1.06)}
+.tarjeta .cuerpo{display:grid;gap:12px;padding:22px 24px 26px;flex:1;align-content:start}
+.tarjeta h3{font-family:var(--f-titulo);font-size:2rem;line-height:1.05;color:#fff}
+.tarjeta p{color:var(--texto-noche-suave)}
+.tarjeta .edad{font-weight:800;color:var(--oro-claro);font-size:.9rem}
+.tarjeta .btn{justify-self:start;margin-top:6px}
+@media (max-width:960px){.tarjetas{grid-template-columns:1fr}.tarjeta{transform:none}}
+
+/* ---------- juego ---------- */
+.juego{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding:36px;border-radius:32px;background:var(--papel);color:var(--tinta);position:relative;overflow:hidden}
+.juego .eyebrow{color:var(--oro-ink)}
+.juego h2{font-family:var(--f-titulo);font-size:var(--s-4);line-height:1.05}
+.juego p{font-family:var(--f-cuento);font-size:var(--s-1);color:var(--tinta-suave)}
+.juego .ilus{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:16/10}
+.juego .ilus img{width:100%;height:100%;object-fit:cover}
+.juego .marcador{font-family:var(--f-ui);font-weight:800;font-size:1rem;color:var(--tinta)}
+.juego .marcador b{font-size:1.6rem;color:var(--oro-ink);font-variant-numeric:tabular-nums}
+@media (max-width:860px){.juego{grid-template-columns:1fr;padding:22px}}
+
+/* angelito escondido */
+.escondido{position:absolute;z-index:8;width:78px;border:0;padding:0;background:none;cursor:pointer;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.escondido img{width:100%;pointer-events:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3))}
+.escondido.oculto{transform:translateY(70%) scale(.6)}
+.escondido:hover{transform:translateY(-6px) rotate(-6deg)}
+.burbuja{position:absolute;z-index:9;pointer-events:none;font-family:var(--f-titulo);font-size:1.8rem;color:var(--oro-ink);background:#fff;padding:4px 16px;border-radius:20px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4);animation:sube 1.6s ease-out forwards;white-space:nowrap}
+@keyframes sube{0%{transform:translate(-50%,0) scale(.6);opacity:0}15%{transform:translate(-50%,-30px) scale(1.05);opacity:1}100%{transform:translate(-50%,-90px) scale(1);opacity:0}}
+
+/* ---------- recursos ---------- */
+.recursos{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.recurso{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:20px;border-radius:22px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);text-decoration:none;transition:background .25s,border-color .25s,transform .25s}
+a.recurso:hover{background:rgba(245,196,81,.1);border-color:rgba(245,196,81,.45);transform:translateY(-3px)}
+.recurso .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:rgba(245,196,81,.15);color:var(--oro)}
+.recurso .ico svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.recurso h3{font-size:1.05rem;font-weight:800;color:#fff}
+.recurso p{font-size:.92rem;color:var(--texto-noche-suave);margin-top:2px}
+.recurso .chip{margin-top:10px}
+
+/* ---------- pie ---------- */
+footer{position:relative;z-index:3;background:var(--papel);color:var(--tinta);margin-top:60px}
+footer .wrap{display:grid;grid-template-columns:auto 1fr auto;gap:36px;align-items:center;padding-block:70px 50px}
+footer img.logo{height:84px;width:auto}
+footer p{font-size:.92rem;color:var(--tinta-suave)}
+footer .angel{width:110px}
+footer a{color:var(--cielo);font-weight:700}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+
+/* ---------- libro (hojeador) ---------- */
+.libro{position:fixed;inset:0;z-index:80;display:grid;grid-template-rows:auto 1fr auto;background:rgba(6,10,36,.94);backdrop-filter:blur(8px);padding:calc(env(safe-area-inset-top,0px) + 12px) var(--gutter-r) calc(env(safe-area-inset-bottom,0px) + 16px) var(--gutter-l)}
+.libro header{display:flex;align-items:center;gap:14px;justify-content:space-between;color:var(--oro-claro);font-weight:800}
+.libro .cerrar{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;cursor:pointer}
+.libro .mesa{display:grid;place-items:center;perspective:2200px;min-height:0}
+.libro .hoja{position:relative;width:min(100%,calc((100vh - 200px)*1.91));aspect-ratio:1250/655;max-width:100%;transform-style:preserve-3d}
+.libro .hoja img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.6);backface-visibility:hidden}
+.libro .hoja img.sale-izq{animation:pasaIzq .6s ease-in forwards;transform-origin:left center}
+.libro .hoja img.sale-der{animation:pasaDer .6s ease-in forwards;transform-origin:right center}
+@keyframes pasaIzq{to{transform:rotateY(-80deg);opacity:0}}
+@keyframes pasaDer{to{transform:rotateY(80deg);opacity:0}}
+.libro footer{all:unset;display:flex;justify-content:center;align-items:center;gap:16px}
+.libro footer button{width:52px;height:52px;border-radius:50%;border:1px solid rgba(245,196,81,.5);background:rgba(245,196,81,.12);color:var(--oro-claro);font-size:1.4rem;cursor:pointer}
+.libro footer span{color:#fff;font-weight:800;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  #volador,#polvo{display:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="polvo" aria-hidden="true"></canvas>
+
+<nav class="nav" aria-label="Secciones">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Escuelas Salesianas María Auxiliadora · Nervión"><img src="img/logos/nervion-blanco.png" alt="Escuelas Salesianas María Auxiliadora · Nervión · Sevilla" width="1200" height="375"></a>
+    <span class="contador" title="Veces que has encontrado al Angelito Burlón"><img src="img/personaje/angelito-yo.webp" alt=""><span id="contadorNav">0</span>&nbsp;encontrado</span>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menú</button>
+    <ul id="menu">
+      <li><a href="#cuento">El cuento</a></li>
+      <li><a href="#video">El vídeo</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#juego">¿Dónde está?</a></li>
+      <li><a href="#recursos">Recursos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main" style="position:relative">
+<svg id="estela" aria-hidden="true"><defs><linearGradient id="gradEstela" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#ffd77a"/></linearGradient></defs><path class="base" d=""/><path class="luz" d=""/></svg>
+<img id="volador" src="img/personaje/angelito-vuela.webp" alt="" aria-hidden="true">
+
+<!-- PORTADA -->
+<header class="hero" id="inicio">
+  <div class="fondo" id="fondoHero"><img src="img/escenas/escena00-1600.webp" srcset="img/escenas/escena00-800.webp 800w, img/escenas/escena00-1600.webp 1600w" sizes="100vw" alt="El Angelito Burlón asoma entre las nubes bajo un cielo de estrellas"></div>
+  <canvas id="estrellasHero" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="texto">
+      <span class="eyebrow">Adviento 2026 · Infantil, 1.º a 3.º de Primaria y familias</span>
+      <h1 class="oro-texto" id="tituloHero" aria-label="Angelito Burlón y la estrella de Navidad">Angelito Burlón<span class="sub">y la estrella de Navidad</span></h1>
+      <p class="intro">Rastro de Dios es un angelito pequeño que todavía está aprendiendo a volar. Un día, Dios le pide que cuide una estrella muy especial… ¿Adónde la llevará?</p>
+      <div class="botones">
+        <a class="btn btn-oro" href="#cuento"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>Leer el cuento</a>
+        <a class="btn btn-vidrio" href="#video">Ver el vídeo</a>
+      </div>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#adviento">Baja y sigue la estela<span></span></a>
+</header>
+
+<!-- CORONA -->
+<section class="corona" id="adviento" aria-labelledby="tCorona">
+  <div class="wrap">
+    <div class="caja">
+      <div class="velas" id="velas" aria-label="Corona de Adviento: toca las velas para encenderlas">
+        <button class="vela" style="--h:66px" data-semana="1" aria-label="Vela de la semana 1"><span class="llama"></span><span class="cuerpo"></span><small>1.ª</small></button>
+        <button class="vela" style="--h:58px" data-semana="2" aria-label="Vela de la semana 2"><span class="llama"></span><span class="cuerpo"></span><small>2.ª</small></button>
+        <button class="vela rosa" style="--h:50px" data-semana="3" aria-label="Vela de la semana 3"><span class="llama"></span><span class="cuerpo"></span><small>3.ª</small></button>
+        <button class="vela" style="--h:42px" data-semana="4" aria-label="Vela de la semana 4"><span class="llama"></span><span class="cuerpo"></span><small>4.ª</small></button>
+      </div>
+      <div>
+        <h2 id="tCorona">El Adviento empieza el domingo 29 de noviembre</h2>
+        <p id="textoCorona">Cuatro semanas para preparar el corazón. Cada domingo encendemos una vela nueva.</p>
+      </div>
+      <div class="cuenta" aria-live="polite">
+        <div><b id="cuentaDias">–</b><span id="cuentaEtiqueta">días</span></div>
+        <div><b id="cuentaNavidad">–</b><span>para Navidad</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EL CUENTO -->
+<section class="papel" id="cuento" aria-labelledby="tCuento">
+  <div class="wrap">
+    <div class="cabecera">
+      <span class="eyebrow">El cuento ilustrado</span>
+      <h2 class="titulo-sec" id="tCuento">Un angelito que aprende a volar</h2>
+      <p>Baja despacio: las ilustraciones cambian a medida que avanza la historia. También puedes hojear el libro tal como está impreso.</p>
+    </div>
+
+    <div class="cuento">
+      <div class="escenario" id="escenario" aria-hidden="true">
+        <figure data-i="0" class="activa"><img src="img/escenas/escena01-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="1"><img src="img/escenas/escena02-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="2"><img src="img/escenas/escena03-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="3"><img src="img/escenas/escena04-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="4"><img src="img/escenas/escena05-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="5"><img src="img/escenas/escena06-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="6"><img src="img/escenas/escena07-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="7"><img src="img/escenas/escena08-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="8"><img src="img/escenas/escena08_borrador-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="9"><img src="img/escenas/escena09-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="10"><img src="img/escenas/escena10a-1600.webp" alt="" loading="lazy"></figure>
+        <figure data-i="11"><img src="img/escenas/escena10-1600.webp" alt="" loading="lazy"></figure>
+        <span class="pagina" id="numPagina">1 / 12</span>
+      </div>
+
+      <div class="pasos" id="pasos">
+        <article class="paso activo" data-i="0"><img class="mini" src="img/escenas/escena01-800.webp" alt="San Miguel escribe en un largo pergamino los nombres de los ángeles" loading="lazy"><div class="txt">Hace mucho, mucho tiempo, San Miguel hizo una lista con los nombres de todos los ángeles. Al final escribió el de un angelito pequeño que estaba aprendiendo a volar:<br><span class="dialogo">—Tú te llamarás <span class="nombre">Rastro de Dios</span>.</span></div></article>
+        <article class="paso" data-i="1"><img class="mini" src="img/escenas/escena02-800.webp" alt="El angelito vuela sobre un camino de luz" loading="lazy"><div class="txt">El angelito solo volaba tranquilo cuando seguía el caminito de luz que Dios dejaba a su paso. Allí movía sus alitas y sonreía feliz.</div></article>
+        <article class="paso" data-i="2"><img class="mini" src="img/escenas/escena03-800.webp" alt="Una mano de luz entrega una estrella al angelito" loading="lazy"><div class="txt">Cuando Dios llenó el cielo de estrellas, guardó una entre sus manos. Era pequeña, blanca y preciosa.<br><span class="dialogo">—Cuídala para mí —le dijo al angelito.</span></div></article>
+        <article class="paso" data-i="3"><img class="mini" src="img/escenas/escena04-800.webp" alt="El angelito, sentado en una nube, abraza la estrella" loading="lazy"><div class="txt"><span class="nombre">Rastro de Dios</span> la abrazó con mucho cuidado. Como pesaba un poquito, se sentó y la acomodó sobre sus rodillas. Y allí se quedó, cuidándola con cariño.</div></article>
+        <article class="paso" data-i="4"><img class="mini" src="img/escenas/escena05-800.webp" alt="Un coro de ángeles canta en el cielo" loading="lazy"><div class="txt">Pasó mucho, muchísimo tiempo. Hasta que una noche el cielo se llenó de canciones y de ángeles que iban de un lado para otro.<br><span class="dialogo">—¿Qué sucede? —preguntó el pequeño.</span><br><span class="dialogo">—¡Esta noche nace Jesús! —le contaron—. Pero necesitamos una estrella que guíe a los Reyes Magos hasta Él.</span></div></article>
+        <article class="paso" data-i="5"><img class="mini" src="img/escenas/escena06-800.webp" alt="Aparece un camino de luz delante del angelito" loading="lazy"><div class="txt">Dios se acercó al angelito y sonrió.<br><span class="dialogo">—Esa es la estrella que tú has cuidado. Ahora te toca llevarla.</span><br><span class="dialogo">—¿Yo? —preguntó <span class="nombre">Rastro de Dios</span>—. ¡Pero si todavía me cuesta volar!</span><br>Delante de él apareció un caminito de luz. El angelito se levantó. ¡La estrella ya no pesaba! Movió un ala, movió la otra y… ¡empezó a volar!</div></article>
+        <article class="paso" data-i="6"><img class="mini" src="img/escenas/escena07-800.webp" alt="Los Reyes Magos siguen la estela del angelito por el desierto" loading="lazy"><div class="txt">De sus plumas se desprendía el polvo brillante que había recogido durante tanto tiempo. ¡Brilla, brilla! ¡Qué bonita estela dejaba!<br>Los Reyes Magos miraron al cielo.<br><span class="dialogo">—¡La estrella! ¡Vamos a seguirla!</span></div></article>
+        <article class="paso" data-i="7"><img class="mini" src="img/escenas/escena08-800.webp" alt="El angelito y los Reyes ante María, José y el niño Jesús" loading="lazy"><div class="txt">Y el angelito los guio hasta Belén, donde encontraron a María, a José y al niño Jesús.</div></article>
+        <article class="paso" data-i="8"><img class="mini" src="img/escenas/escena08_borrador-800.webp" alt="El angelito ríe de alegría junto al portal" loading="lazy"><div class="txt">Al verlo, <span class="nombre">Rastro de Dios</span> se rio de alegría:<br><span class="dialogo">—¡Ji, ji, ji! ¡Lo he conseguido!</span><br>Su risa era tan contagiosa que todos sonrieron.</div></article>
+        <article class="paso" data-i="9"><img class="mini" src="img/escenas/escena09-800.webp" alt="El angelito visita un aula con la corona de Adviento" loading="lazy"><div class="txt">Desde entonces, cada año, cuando llega el Adviento y empezamos a preparar la Navidad, el pequeño angelito vuelve a visitarnos. Le encanta esconderse, cambiar alguna cosita de sitio y preparar pequeñas sorpresas. Por eso lo llamamos <span class="nombre">Angelito Burlón</span>.</div></article>
+        <article class="paso" data-i="10"><img class="mini" src="img/escenas/escena10a-800.webp" alt="El angelito, tumbado en la alfombra del aula, ríe" loading="lazy"><div class="txt">Entre risas y juegos, nos recuerda su gran secreto:<br><span class="dialogo">—¡Jesús está por llegar! Vamos a recibirlo con cariño, ayudándonos y compartiendo.</span></div></article>
+        <article class="paso" data-i="11"><img class="mini" src="img/escenas/escena10-800.webp" alt="El angelito se asoma detrás de una estantería y guiña un ojo" loading="lazy"><div class="txt">Y, si escucháis una risita suave…<span class="grande">¡Ji, ji, ji!</span>…quizá <span class="nombre">Angelito Burlón</span> ya esté por aquí.</div></article>
+      </div>
+    </div>
+
+    <div class="acciones-cuento">
+      <button class="btn btn-tinta" id="abrirLibro" type="button">Hojear el libro</button>
+      <a class="btn btn-oro" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener">Abrir el cuento en PDF</a>
+      <a class="btn btn-tinta" href="#" data-enlace="cuentoImprimir" aria-disabled="true">PDF A4 para imprimir · próximamente</a>
+    </div>
+    <p class="credito" style="padding-bottom:70px">Adaptación libre del cuento «Rastro de Dios», de Montserrat del Amo (Ediciones SM, colección El Barco de Vapor). Edición: Escuelas Salesianas María Auxiliadora · Nervión · Sevilla.</p>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section class="seccion" id="video" aria-labelledby="tVideo">
+  <div class="wrap" style="display:grid;gap:36px">
+    <div class="cabecera">
+      <span class="eyebrow">El vídeo animado</span>
+      <h2 class="titulo-sec" id="tVideo">El cuento, en dibujos animados</h2>
+      <p>Tres minutos para verlo en clase o en casa, con la voz de la narradora y los personajes.</p>
+    </div>
+    <div class="pantalla" id="pantalla">
+      <img src="img/escenas/escena05-1600.webp" alt="" loading="lazy">
+      <div class="velo">
+        <div class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg></div>
+        <b>Muy pronto</b>
+        <span>Aquí aparecerá el vídeo en cuanto esté terminado.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTOS -->
+<section class="seccion" id="proyectos" aria-labelledby="tProyectos" style="padding-top:40px">
+  <div class="wrap" style="display:grid;gap:36px">
+    <div class="cabecera">
+      <span class="eyebrow">Los proyectos</span>
+      <h2 class="titulo-sec" id="tProyectos">Un proyecto para cada edad</h2>
+      <p>Actividades, rutinas y celebraciones para vivir el Adviento con el Angelito Burlón en el aula y en casa.</p>
+    </div>
+    <div class="tarjetas">
+      <article class="tarjeta">
+        <div class="img"><img src="img/escenas/escena10a-800.webp" alt="El angelito ríe tumbado en un aula de Infantil" loading="lazy"></div>
+        <div class="cuerpo">
+          <span class="chip" data-chip="infantil">En preparación</span>
+          <h3>Infantil</h3>
+          <span class="edad">3, 4 y 5 años</span>
+          <p>Las travesuras del angelito en el aula, la estrella que cuidamos entre todos y pequeños gestos cada semana.</p>
+          <a class="btn btn-oro" href="#" data-enlace="infantil" aria-disabled="true">Ver proyecto</a>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="img"><img src="img/escenas/escena09-800.webp" alt="La corona de Adviento en un aula de Primaria" loading="lazy"></div>
+        <div class="cuerpo">
+          <span class="chip" data-chip="primaria">En preparación</span>
+          <h3>1.º a 3.º de Primaria</h3>
+          <span class="edad">6, 7 y 8 años</span>
+          <p>Retos semanales para ser «estela de luz» para los demás: ayudar, compartir y esperar a Jesús con alegría.</p>
+          <a class="btn btn-oro" href="#" data-enlace="primaria" aria-disabled="true">Ver proyecto</a>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="img"><img src="img/escenas/escena08-800.webp" alt="La Sagrada Familia en el portal de Belén" loading="lazy"></div>
+        <div class="cuerpo">
+          <span class="chip" data-chip="familias">En preparación</span>
+          <h3>Familias</h3>
+          <span class="edad">Para vivir en casa</span>
+          <p>Ideas sencillas para que el Angelito Burlón visite también vuestra casa y preparéis juntos la Navidad.</p>
+          <a class="btn btn-oro" href="#" data-enlace="familias" aria-disabled="true">Ver proyecto</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- JUEGO -->
+<section class="seccion" id="juego" aria-labelledby="tJuego" style="padding-top:40px">
+  <div class="wrap">
+    <div class="juego">
+      <div style="display:grid;gap:16px">
+        <span class="eyebrow">Un juego</span>
+        <h2 id="tJuego">¿Dónde está el Angelito Burlón?</h2>
+        <p>Le encanta esconderse. Mientras recorres la web, a veces asoma la cabecita por algún rincón. Si lo ves, ¡tócalo antes de que se escape!</p>
+        <p class="marcador">Lo has encontrado <b id="contadorJuego">0</b> veces.</p>
+        <div class="botones"><button class="btn btn-tinta" id="pista" type="button">Dame una pista</button></div>
+      </div>
+      <div class="ilus" id="ilusJuego"><img src="img/escenas/escena10-1600.webp" alt="El angelito se asoma detrás de una estantería y se tapa la boca para no reírse" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section class="seccion" id="recursos" aria-labelledby="tRecursos" style="padding-top:40px">
+  <div class="wrap" style="display:grid;gap:36px">
+    <div class="cabecera">
+      <span class="eyebrow">Recursos</span>
+      <h2 class="titulo-sec" id="tRecursos">Más cosas del Angelito</h2>
+      <p>Iremos añadiendo materiales a medida que estén listos.</p>
+    </div>
+    <div class="recursos" id="listaRecursos">
+      <a class="recurso" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h5v17H6a2 2 0 00-2 2zM20 5a2 2 0 00-2-2h-5v17h5a2 2 0 012 2z"/></svg></span><div><h3>Cuento ilustrado</h3><p>Versión para leer en pantalla.</p><span class="chip listo">Disponible</span></div></a>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h12"/></svg></span><div><h3>Guion para narrar</h3><p>El texto del cuento con indicaciones para contarlo en voz alta.</p><span class="chip">Próximamente</span></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 16.8 6.4 20l1.4-6.3L3 9.5l6.4-.6z"/></svg></span><div><h3>La estrella para recortar</h3><p>Plantilla para que cada clase cuide su propia estrella.</p><span class="chip">Próximamente</span></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></svg></span><div><h3>Láminas para colorear</h3><p>Las escenas del cuento en línea para pintar.</p><span class="chip">Próximamente</span></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z"/></svg></span><div><h3>Canción del Angelito</h3><p>Para cantar en los buenos días.</p><span class="chip">Próximamente</span></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.6-7 10-7 10z"/></svg></span><div><h3>Oraciones de Adviento</h3><p>Una oración sencilla para cada semana.</p><span class="chip">Próximamente</span></div></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img class="logo" src="img/logos/nervion-color.png" alt="Escuelas Salesianas María Auxiliadora · Nervión · Sevilla" width="1200" height="375">
+    <div style="display:grid;gap:8px;min-width:0">
+      <p><strong>Pastoral · Escuelas Salesianas María Auxiliadora · Nervión (Sevilla)</strong></p>
+      <p>Angelito Burlón y la estrella de Navidad es una adaptación libre del cuento «Rastro de Dios», de Montserrat del Amo (Ediciones SM).</p>
+          </div>
+    <img class="angel" src="img/personaje/angelito-risa.webp" alt="" loading="lazy">
+  </div>
+</footer>
+
+<!-- HOJEADOR DEL LIBRO -->
+<div class="libro" id="libro" role="dialog" aria-modal="true" aria-label="Libro del cuento" hidden>
+  <header><span>Angelito Burlón y la estrella de Navidad</span><button class="cerrar" id="cerrarLibro" type="button">Cerrar</button></header>
+  <div class="mesa"><div class="hoja" id="hoja"></div></div>
+  <footer><button id="libroAnt" type="button" aria-label="Página anterior">‹</button><span id="libroNum">1 / 16</span><button id="libroSig" type="button" aria-label="Página siguiente">›</button></footer>
+</div>
+
+<script>
+/* ============================================================
+   ENLACES: rellena aquí lo que vaya estando listo.
+   Deja '' (vacío) para que salga como «En preparación».
+   video: ruta a un .mp4 de la carpeta video/ (p. ej. 'video/angelito.mp4')
+          o un enlace de YouTube.
+   ============================================================ */
+const ENLACES = {
+  video: '',
+  infantil: '',
+  primaria: '',
+  familias: '',
+  cuentoImprimir: ''
+};
+
+const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const guarda = { get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}} };
+
+/* ---------- enlaces y marcadores de «próximamente» ---------- */
+document.querySelectorAll('[data-enlace]').forEach(a=>{
+  const url = ENLACES[a.dataset.enlace];
+  if(url){ a.href=url; a.target='_blank'; a.rel='noopener'; a.removeAttribute('aria-disabled'); a.textContent=a.textContent.replace(' · próximamente','');
+    const chip=document.querySelector(`[data-chip="${a.dataset.enlace}"]`); if(chip){chip.textContent='Disponible';chip.classList.add('listo');} }
+  else a.addEventListener('click',e=>e.preventDefault());
+});
+if(ENLACES.video){
+  const p=document.getElementById('pantalla'); const v=ENLACES.video;
+  const yt=v.match(/(?:youtu\.be\/|v=|shorts\/)([\w-]{11})/);
+  p.innerHTML = yt ? `<iframe src="https://www.youtube-nocookie.com/embed/${yt[1]}" title="Vídeo Angelito Burlón" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+                   : `<video src="${v}" controls preload="metadata" poster="img/escenas/escena05-1600.webp"></video>`;
+}
+
+/* ---------- menú móvil y sección activa ---------- */
+const nav=document.querySelector('.nav'), menuBtn=document.getElementById('menuBtn');
+menuBtn.addEventListener('click',()=>{const o=nav.classList.toggle('abierto');menuBtn.setAttribute('aria-expanded',o)});
+document.querySelectorAll('.nav ul a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('abierto');menuBtn.setAttribute('aria-expanded','false')}));
+const enlacesNav=[...document.querySelectorAll('.nav ul a')];
+const obsNav=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)enlacesNav.forEach(a=>a.classList.toggle('activo',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+['cuento','video','proyectos','juego','recursos'].forEach(id=>obsNav.observe(document.getElementById(id)));
+
+/* ---------- título: letras que caen ---------- */
+(()=>{const h=document.getElementById('tituloHero'); const sub=h.querySelector('.sub'); const t=h.firstChild.textContent; h.firstChild.remove();
+  const frag=document.createDocumentFragment(); [...t].forEach((c,i)=>{if(c===' '){frag.appendChild(document.createTextNode(' '));return}const s=document.createElement('span');s.className='letra';s.style.setProperty('--i',i);s.textContent=c===' '?' ':c;s.setAttribute('aria-hidden','true');frag.appendChild(s)});
+  h.insertBefore(frag,sub);})();
+
+/* ---------- portada: paralaje y estrellas ---------- */
+const fondo=document.getElementById('fondoHero');
+if(!reducido) addEventListener('pointermove',e=>{ if(scrollY>innerHeight)return; fondo.style.setProperty('--px',((e.clientX/innerWidth-.5)*-18)+'px'); fondo.style.setProperty('--py',((e.clientY/innerHeight-.5)*-12)+'px') },{passive:true});
+(()=>{const c=document.getElementById('estrellasHero'),x=c.getContext('2d');let W,H,est=[],fug=null;
+  function tam(){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
+    est=Array.from({length:Math.round(W*H/9000)},()=>({x:Math.random()*W,y:Math.random()*H*.7,r:Math.random()*1.4+.3,f:Math.random()*6.28,v:Math.random()*.02+.008}))}
+  tam();addEventListener('resize',tam);
+  function dib(){x.clearRect(0,0,W,H);
+    for(const s of est){s.f+=s.v;const a=.35+.65*Math.abs(Math.sin(s.f));x.globalAlpha=a;x.fillStyle='#fff6d0';x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill();
+      if(s.r>1.4){x.globalAlpha=a*.5;x.fillRect(s.x-s.r*3,s.y-.4,s.r*6,.8);x.fillRect(s.x-.4,s.y-s.r*3,.8,s.r*6)}}
+    if(!fug&&Math.random()<.006)fug={x:Math.random()*W*.8+W*.2,y:Math.random()*H*.35,l:0};
+    if(fug){fug.l+=1;const k=fug.l*9;const g=x.createLinearGradient(fug.x-k,fug.y+k*.4,fug.x-k+120,fug.y+k*.4-48);g.addColorStop(0,'rgba(255,231,163,0)');g.addColorStop(1,'rgba(255,240,200,.95)');
+      x.globalAlpha=1-fug.l/50;x.strokeStyle=g;x.lineWidth=2;x.beginPath();x.moveTo(fug.x-k,fug.y+k*.4);x.lineTo(fug.x-k+120,fug.y+k*.4-48);x.stroke();if(fug.l>50)fug=null}
+    x.globalAlpha=1;requestAnimationFrame(dib)}
+  if(!reducido)dib();
+})();
+
+/* ---------- polvo de estrellas que sigue al dedo o al ratón ---------- */
+(()=>{if(reducido)return;const c=document.getElementById('polvo'),x=c.getContext('2d');let W,H,p=[];
+  function tam(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0)}tam();addEventListener('resize',tam);
+  function suelta(cx,cy,n,f=1){for(let i=0;i<n;i++)p.push({x:cx,y:cy,vx:(Math.random()-.5)*1.6*f,vy:(Math.random()-.2)*1.6*f,v:1,r:Math.random()*2.4+.8,h:Math.random()<.3})}
+  let ult=0;addEventListener('pointermove',e=>{const t=performance.now();if(t-ult<16)return;ult=t;suelta(e.clientX,e.clientY,2)},{passive:true});
+  window.explosion=(cx,cy)=>suelta(cx,cy,60,4);
+  function dib(){x.clearRect(0,0,W,H);p=p.filter(s=>s.v>0);for(const s of p){s.x+=s.vx;s.y+=s.vy;s.vy+=.03;s.v-=.018;x.globalAlpha=Math.max(s.v,0);x.fillStyle=s.h?'#ffffff':'#f5c451';
+    if(s.r>2.4){x.beginPath();for(let k=0;k<4;k++){const a=k*Math.PI/2;x.lineTo(s.x+Math.cos(a)*s.r*1.8,s.y+Math.sin(a)*s.r*1.8);x.lineTo(s.x+Math.cos(a+.785)*s.r*.5,s.y+Math.sin(a+.785)*s.r*.5)}x.fill()}
+    else{x.beginPath();x.arc(s.x,s.y,s.r*.7,0,6.28);x.fill()}}x.globalAlpha=1;requestAnimationFrame(dib)}dib();
+})();
+
+/* ---------- la estela dorada que recorre la web, con el angelito volando ---------- */
+(()=>{const main=document.getElementById('main'),svg=document.getElementById('estela'),base=svg.querySelector('.base'),luz=svg.querySelector('.luz'),vol=document.getElementById('volador');let L=0;
+  function traza(){const W=main.clientWidth,H=main.scrollHeight;svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    const y0=innerHeight*.55,margen=Math.min(60,W*.06);let d=`M ${W*.62} ${y0}`;const tramos=Math.max(6,Math.round(H/700));const paso=(H-y0-200)/tramos;
+    for(let i=1;i<=tramos;i++){const izq=i%2===1;const xe=izq?margen:W-margen;const ye=y0+paso*i;d+=` C ${izq?W*.9:W*.1} ${ye-paso*.75}, ${izq?W*.1:W*.9} ${ye-paso*.35}, ${xe} ${ye}`}
+    base.setAttribute('d',d);luz.setAttribute('d',d);L=luz.getTotalLength();luz.style.strokeDasharray=L;mueve()}
+  function mueve(){const H=main.scrollHeight;const prog=Math.min(1,Math.max(0,(scrollY+innerHeight*.5)/(H)));const l=L*Math.min(1,prog*1.04);luz.style.strokeDashoffset=L-l;
+    const pt=luz.getPointAtLength(l),pt2=luz.getPointAtLength(Math.min(L,l+4));const dir=pt2.x<pt.x?-1:1;vol.style.transform=`translate(${pt.x-43}px,${pt.y-60}px) scaleX(${dir})`}
+  if(reducido){svg.style.display='none';return}
+  addEventListener('scroll',()=>requestAnimationFrame(mueve),{passive:true});addEventListener('resize',traza);addEventListener('load',traza);traza();setTimeout(traza,1500);
+})();
+
+/* ---------- el cuento: escenas que cambian al bajar ---------- */
+(()=>{const esc=document.getElementById('escenario'),figs=[...esc.querySelectorAll('figure')],pasos=[...document.querySelectorAll('.paso')],num=document.getElementById('numPagina');
+  esc.classList.add('listo');
+  const o=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const i=+e.target.dataset.i;pasos.forEach(p=>p.classList.toggle('activo',p===e.target));figs.forEach(f=>f.classList.toggle('activa',+f.dataset.i===i));num.textContent=`${i+1} / ${pasos.length}`}),{rootMargin:'-45% 0px -45% 0px'});
+  pasos.forEach(p=>o.observe(p));
+  // precarga las escenas cuando el cuento se acerca
+  new IntersectionObserver((es,ob)=>{if(es[0].isIntersecting){figs.forEach(f=>{const im=f.querySelector('img');im.loading='eager'});ob.disconnect()}},{rootMargin:'600px'}).observe(esc);
+})();
+
+/* ---------- corona y cuentas atrás ---------- */
+(()=>{const hoy=new Date();hoy.setHours(0,0,0,0);const inicio=new Date(2026,10,29),navidad=new Date(2026,11,25);const dia=864e5;
+  const semanas=[new Date(2026,10,29),new Date(2026,11,6),new Date(2026,11,13),new Date(2026,11,20)];
+  const velas=[...document.querySelectorAll('.vela')];velas.forEach((v,i)=>{if(hoy>=semanas[i])v.classList.add('encendida');v.addEventListener('click',()=>{v.classList.toggle('encendida');const r=v.getBoundingClientRect();window.explosion&&explosion(r.left+r.width/2,r.top)})});
+  const dN=Math.max(0,Math.round((navidad-hoy)/dia));document.getElementById('cuentaNavidad').textContent=dN;
+  const t=document.getElementById('tCorona'),p=document.getElementById('textoCorona'),cd=document.getElementById('cuentaDias'),ce=document.getElementById('cuentaEtiqueta');
+  if(hoy<inicio){cd.textContent=Math.round((inicio-hoy)/dia);ce.textContent='para el Adviento'}
+  else if(hoy<navidad){const s=semanas.filter(d=>hoy>=d).length;t.textContent=`Estamos en la ${['primera','segunda','tercera','cuarta'][s-1]} semana de Adviento`;cd.textContent=s;ce.textContent=s===1?'vela encendida':'velas encendidas'}
+  else{t.textContent='¡Feliz Navidad! Jesús ya está aquí';p.textContent='El angelito llevó la estrella hasta Belén. Ahora nos toca a nosotros ser estela de luz.';cd.textContent='4';ce.textContent='velas encendidas'}
+})();
+
+/* ---------- juego: ¿dónde está el Angelito Burlón? ---------- */
+(()=>{let n=guarda.get('angelito-encontrado',0);const cN=document.getElementById('contadorNav'),cJ=document.getElementById('contadorJuego');const pinta=()=>{cN.textContent=n;cJ.textContent=n};pinta();
+  const sitios=[{sel:'#adviento .caja',x:'96%',y:'-52px'},{sel:'#cuento .cabecera',x:'92%',y:'40px'},{sel:'#pantalla',x:'4%',y:'-56px'},{sel:'.tarjetas',x:'50%',y:'-60px'},{sel:'#ilusJuego',x:'82%',y:'60%'},{sel:'#listaRecursos',x:'90%',y:'-60px'},{sel:'footer .wrap',x:'60%',y:'-40px'}];
+  const imgs=['angelito-yo','angelito-pie','angelito-risa'];
+  const b=document.createElement('button');b.className='escondido oculto';b.type='button';b.setAttribute('aria-label','¡Has encontrado al Angelito Burlón! Tócalo');b.innerHTML='<img alt="">';
+  let actual=-1;
+  function esconde(){let i;do{i=Math.floor(Math.random()*sitios.length)}while(i===actual&&sitios.length>1);actual=i;const s=sitios[i],cont=document.querySelector(s.sel);if(!cont)return;
+    if(getComputedStyle(cont).position==='static')cont.style.position='relative';b.classList.add('oculto');b.querySelector('img').src=`img/personaje/${imgs[Math.floor(Math.random()*imgs.length)]}.webp`;
+    b.style.left=`calc(${s.x} - 39px)`;b.style.top=s.y;cont.appendChild(b);setTimeout(()=>b.classList.remove('oculto'),400)}
+  b.addEventListener('click',e=>{n++;guarda.set('angelito-encontrado',n);pinta();const r=b.getBoundingClientRect();window.explosion&&explosion(r.left+r.width/2,r.top+r.height/2);
+    const bur=document.createElement('span');bur.className='burbuja';bur.textContent=['¡Ji, ji, ji!','¡Me has pillado!','¡Jesús está por llegar!','¡Ji, ji, ji!'][n%4];bur.style.left=(b.offsetLeft+39)+'px';bur.style.top=b.offsetTop+'px';b.parentNode.appendChild(bur);setTimeout(()=>bur.remove(),1700);
+    b.classList.add('oculto');setTimeout(esconde,900)});
+  document.getElementById('pista').addEventListener('click',()=>{b.scrollIntoView({behavior:reducido?'auto':'smooth',block:'center'});b.animate&&b.animate([{transform:'rotate(0)'},{transform:'rotate(-12deg)'},{transform:'rotate(12deg)'},{transform:'rotate(0)'}],{duration:600,iterations:2})});
+  esconde();
+})();
+
+/* ---------- tarjetas con relieve ---------- */
+if(!reducido&&matchMedia('(hover:hover)').matches)document.querySelectorAll('.tarjeta').forEach(t=>{
+  t.addEventListener('pointermove',e=>{const r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;t.style.setProperty('--ry',((px-.5)*10)+'deg');t.style.setProperty('--rx',((.5-py)*8)+'deg');t.style.setProperty('--mx',px*100+'%');t.style.setProperty('--my',py*100+'%')});
+  t.addEventListener('pointerleave',()=>{t.style.setProperty('--rx','0deg');t.style.setProperty('--ry','0deg')})});
+
+/* ---------- hojeador del libro ---------- */
+(()=>{const lib=document.getElementById('libro'),hoja=document.getElementById('hoja'),num=document.getElementById('libroNum');const total=16;let i=0;
+  const src=k=>`img/libro/doble${String(k+1).padStart(2,'0')}.webp`;
+  function muestra(k,dir){const vieja=hoja.querySelector('img');const im=new Image();im.src=src(k);im.alt=`Doble página ${k+1} del cuento`;hoja.appendChild(im);
+    if(vieja){if(dir&&!reducido){vieja.classList.add(dir>0?'sale-izq':'sale-der');vieja.style.zIndex=2;setTimeout(()=>vieja.remove(),600)}else vieja.remove()}
+    num.textContent=`${k+1} / ${total}`;if(k+1<total){new Image().src=src(k+1)}}
+  const ir=d=>{const k=Math.min(total-1,Math.max(0,i+d));if(k!==i){i=k;muestra(i,d)}};
+  document.getElementById('abrirLibro').addEventListener('click',()=>{lib.hidden=false;document.body.style.overflow='hidden';if(!hoja.firstChild)muestra(0);document.getElementById('libroSig').focus()});
+  const cierra=()=>{lib.hidden=true;document.body.style.overflow='';document.getElementById('abrirLibro').focus()};
+  document.getElementById('cerrarLibro').addEventListener('click',cierra);
+  document.getElementById('libroSig').addEventListener('click',()=>ir(1));document.getElementById('libroAnt').addEventListener('click',()=>ir(-1));
+  addEventListener('keydown',e=>{if(lib.hidden)return;if(e.key==='ArrowRight')ir(1);if(e.key==='ArrowLeft')ir(-1);if(e.key==='Escape')cierra()});
+  let x0=null;hoja.addEventListener('pointerdown',e=>x0=e.clientX);hoja.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;x0=null;if(Math.abs(dx)>40)ir(dx<0?1:-1);else ir(e.clientX>hoja.getBoundingClientRect().left+hoja.clientWidth/2?1:-1)});
+})();
+</script>
+</body>
+</html>
