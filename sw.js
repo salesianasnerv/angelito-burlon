@@ -1,9 +1,9 @@
 /* Service worker de la web del Angelito Burlón.
    Sube el número de VERSION cada vez que cambies la web, para que los móviles descarguen lo nuevo. */
-const VERSION = 'angelito-v16';
+const VERSION = 'angelito-v17';
 const BASICO = ['./', 'index.html', 'manifest.webmanifest', 'favicon.ico', 'icons/icon-192.png', 'icons/icon-512.png',
   'img/logos/nervion-blanco.png', 'img/logos/nervion-color.png', 'img/escenas/escena00-1600.webp', 'img/escenas/escena00-800.webp',
-  'img/personaje/angelito-yo.webp', 'img/personaje/angelito-pie.webp', 'img/personaje/angelito-risa.webp'];
+  'img/personaje/angelito-yo.webp', 'img/personaje/angelito-pie.webp', 'img/personaje/angelito-risa.webp', 'img/alas.webp'];
 
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(BASICO)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
