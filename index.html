@@ -321,6 +321,11 @@ a.recurso:hover{background:rgba(245,196,81,.1);border-color:rgba(245,196,81,.45)
 .recurso h3{font-size:1.05rem;font-weight:800;color:#fff}
 .recurso p{font-size:.92rem;color:var(--texto-noche-suave);margin-top:2px}
 .recurso .chip{margin-top:10px}
+.recurso .enlaces{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recurso .enlaces a{color:var(--oro-claro);font-weight:800;font-size:.9rem;text-decoration:none;border-bottom:1px solid rgba(245,196,81,.45)}
+.recurso .enlaces a:hover{color:#fff}
+.recurso audio{width:100%;margin-top:10px;height:36px}
+.juegos-links{flex-wrap:wrap}
 
 /* ---------- pie ---------- */
 footer{position:relative;z-index:3;background:var(--papel);color:var(--tinta);margin-top:60px}
@@ -545,6 +550,12 @@ footer a{color:var(--cielo);font-weight:700}
         <p>Le encanta esconderse. Mientras recorres la web, a veces asoma la cabecita por algún rincón. Si lo ves, ¡tócalo antes de que se escape!</p>
         <p class="marcador">Lo has encontrado <b id="contadorJuego">0</b> veces.</p>
         <div class="botones"><button class="btn btn-tinta" id="pista" type="button">Dame una pista</button></div>
+        <p style="margin-top:6px">Y si te quedas con ganas, aquí tienes tres juegos más:</p>
+        <div class="botones juegos-links">
+          <a class="btn btn-oro" href="juegos/busca.html">Busca al angelito</a>
+          <a class="btn btn-oro" href="juegos/volar.html">Vuela con la estrella</a>
+          <a class="btn btn-oro" href="juegos/memory.html">Parejas del cuento</a>
+        </div>
       </div>
       <div class="ilus" id="ilusJuego"><img src="img/escenas/escena10-1600.webp" alt="El angelito se asoma detrás de una estantería y se tapa la boca para no reírse" loading="lazy"></div>
     </div>
@@ -563,11 +574,11 @@ footer a{color:var(--cielo);font-weight:700}
       <a class="recurso" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h5v17H6a2 2 0 00-2 2zM20 5a2 2 0 00-2-2h-5v17h5a2 2 0 012 2z"/></svg></span><div><h3>Cuento ilustrado</h3><p>Versión para leer en pantalla.</p><span class="chip listo">Disponible</span></div></a>
       <a class="recurso" href="pdf/Angelito_Burlon_A4_para_imprimir.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v7H6z"/></svg></span><div><h3>Cuento para imprimir</h3><p>PDF en A4 para imprimir en el colegio o en casa.</p><span class="chip listo">Disponible</span></div></a>
       <a class="recurso" href="#video"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 4l14 8-14 8z"/></svg></span><div><h3>Vídeo animado</h3><p>El cuento en dibujos animados, con subtítulos.</p><span class="chip listo">Disponible</span></div></a>
-      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h12"/></svg></span><div><h3>Guion para narrar</h3><p>El texto del cuento con indicaciones para contarlo en voz alta.</p><span class="chip">Próximamente</span></div></div>
-      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 16.8 6.4 20l1.4-6.3L3 9.5l6.4-.6z"/></svg></span><div><h3>La estrella para recortar</h3><p>Plantilla para que cada clase cuide su propia estrella.</p><span class="chip">Próximamente</span></div></div>
-      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></svg></span><div><h3>Láminas para colorear</h3><p>Las escenas del cuento en línea para pintar.</p><span class="chip">Próximamente</span></div></div>
-      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z"/></svg></span><div><h3>Canción del Angelito</h3><p>Para cantar en los buenos días.</p><span class="chip">Próximamente</span></div></div>
-      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.6-7 10-7 10z"/></svg></span><div><h3>Oraciones de Adviento</h3><p>Una oración sencilla para cada semana.</p><span class="chip">Próximamente</span></div></div>
+      <a class="recurso" href="pdf/Angelito_Burlon_guion_para_narrar.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h12"/></svg></span><div><h3>Guion para narrar</h3><p>El cuento con voces, pausas y gestos para contarlo en voz alta.</p><span class="chip listo">Disponible</span></div></a>
+      <a class="recurso" href="pdf/Angelito_Burlon_estrella_para_recortar.pdf" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.2 1.4 6.3L12 16.8 6.4 20l1.4-6.3L3 9.5l6.4-.6z"/></svg></span><div><h3>La estrella para recortar</h3><p>En color, para colorear, con el gesto de la semana y en 3D.</p><span class="chip listo">Disponible</span></div></a>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></svg></span><div><h3>Láminas para colorear</h3><p>Ocho escenas del cuento con una frase, en dos niveles.</p><div class="enlaces"><a href="pdf/Angelito_Burlon_laminas_colorear_Infantil.pdf" target="_blank" rel="noopener">Infantil</a><a href="pdf/Angelito_Burlon_laminas_colorear_1-3_Primaria.pdf" target="_blank" rel="noopener">1.º a 3.º de Primaria</a></div></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z"/></svg></span><div><h3>Canción del Angelito</h3><p>Un villancico nuevo para cantar en los buenos días.</p><div class="enlaces"><a href="pdf/Angelito_Burlon_cancion_letra.pdf" target="_blank" rel="noopener">Letra con gestos</a></div><span class="chip">Audio próximamente</span></div></div>
+      <div class="recurso"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.6-7 10-7 10z"/></svg></span><div><h3>Oración del Angelito</h3><p>Una oración sencilla para rezar en clase o en casa.</p><div class="enlaces"><a href="pdf/Angelito_Burlon_oracion.pdf" target="_blank" rel="noopener">Tarjetas para imprimir</a></div><audio controls preload="none" src="audio/oracion_angelito.mp3"></audio></div></div>
     </div>
   </div>
 </section>
