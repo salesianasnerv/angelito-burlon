@@ -79,9 +79,8 @@ p{margin:0}
 #polvo{position:fixed;inset:0;pointer-events:none;z-index:70}
 #estela{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:2;overflow:visible}
 #estela path.base{fill:none;stroke:var(--oro);stroke-opacity:.16;stroke-width:2;stroke-dasharray:2 10;stroke-linecap:round}
-#estela path.luz{fill:none;stroke:url(#gradEstela);stroke-opacity:.75;stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,214,120,.9))}
-#volador{position:absolute;width:clamp(84px,9vw,124px);left:0;top:0;pointer-events:none;z-index:9;will-change:transform;filter:drop-shadow(0 0 14px rgba(255,214,120,.75)) drop-shadow(0 8px 14px rgba(0,0,0,.3));animation:aletea 1.6s ease-in-out infinite}
-@keyframes aletea{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -10px;rotate:3deg}}
+#volador{position:absolute;left:0;top:0;width:clamp(64px,6vw,90px);pointer-events:none;z-index:9;will-change:transform;filter:drop-shadow(0 0 10px rgba(255,214,120,.6))}
+#estelaLuz{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:2}
 
 /* ---------- navegación ---------- */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,21,66,.72);backdrop-filter:blur(12px) saturate(1.3);-webkit-backdrop-filter:blur(12px) saturate(1.3);border-bottom:1px solid rgba(245,196,81,.18)}
@@ -136,7 +135,7 @@ p{margin:0}
   .hero .wrap{grid-template-columns:1fr;padding-block:260px 80px}
   .hero .texto{grid-column:1}
   .scroll-hint{display:none}
-  #estela path.luz{stroke-opacity:.5}
+  #estelaLuz{opacity:.6}
 }
 
 /* ---------- corona de Adviento ---------- */
@@ -193,8 +192,10 @@ p{margin:0}
 .paso .txt>*{transition:color .4s}
 .paso:not(.activo){color:var(--tinta-suave)}
 .paso:not(.activo) .dialogo,.paso:not(.activo) .nombre{color:inherit}
-.acciones-cuento{display:flex;flex-wrap:wrap;gap:12px;padding-bottom:90px}
-.credito{font-size:.85rem;color:var(--tinta-suave);max-width:60ch}
+.acciones-cuento{display:grid;justify-items:center;gap:18px;text-align:center;margin:10px auto 26px;padding:30px 24px;border-radius:28px;background:#fff;border:1px solid var(--papel-2);box-shadow:0 24px 50px -30px rgba(29,36,84,.4)}
+.acciones-cuento h3{font-family:var(--f-titulo);font-size:var(--s-3);line-height:1.1;color:var(--tinta)}
+.acciones-cuento .botones{justify-content:center}
+.credito{font-size:.9rem;color:var(--tinta-suave);text-align:center;max-width:none;width:100%}
 @media (max-width:860px){
   .cuento{grid-template-columns:1fr;gap:0}
   .escenario{top:calc(env(safe-area-inset-top,0px) + 70px);height:auto;aspect-ratio:16/9;z-index:6;border-radius:20px;box-shadow:0 20px 40px -20px rgba(29,36,84,.6),0 0 0 5px #fff}
@@ -360,6 +361,8 @@ footer a{color:var(--cielo);font-weight:700}
   html{scroll-behavior:auto}
   #volador,#polvo{display:none}
 }
+@media (max-width:1100px){#volador{display:none}
+}
 </style>
 </head>
 <body>
@@ -382,12 +385,13 @@ footer a{color:var(--cielo);font-weight:700}
 </nav>
 
 <main id="main" style="position:relative">
-<svg id="estela" aria-hidden="true"><defs><linearGradient id="gradEstela" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#ffd77a"/></linearGradient></defs><path class="base" d=""/><path class="luz" d=""/></svg>
+<svg id="estela" aria-hidden="true"><defs><linearGradient id="gradEstela" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#ffd77a"/></linearGradient></defs><path class="base" d=""/></svg>
+<canvas id="estelaLuz" aria-hidden="true"></canvas>
 <img id="volador" src="img/personaje/angelito-vuela.webp" alt="" aria-hidden="true">
 
 <!-- PORTADA -->
 <header class="hero" id="inicio">
-  <div class="fondo" id="fondoHero"><img src="img/escenas/escena00-1600.webp" srcset="img/escenas/escena00-800.webp 800w, img/escenas/escena00-1600.webp 1600w" sizes="100vw" alt="El Angelito Burlón asoma entre las nubes bajo un cielo de estrellas"><video id="videoHero" muted loop playsinline preload="auto" aria-hidden="true" poster="img/escenas/escena00-1600.webp"><source src="video/escenas/clip00.mp4" type="video/mp4"></video></div>
+  <div class="fondo" id="fondoHero"><img src="img/escenas/escena00-1600.webp" srcset="img/escenas/escena00-800.webp 800w, img/escenas/escena00-1600.webp 1600w" sizes="100vw" alt="El Angelito Burlón asoma entre las nubes bajo un cielo de estrellas"><video id="videoHero" muted playsinline preload="auto" aria-hidden="true" poster="img/escenas/escena00-1600.webp"><source src="video/escenas/clip00.mp4" type="video/mp4"></video></div>
   <canvas id="estrellasHero" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="texto">
@@ -446,18 +450,18 @@ footer a{color:var(--cielo);font-weight:700}
 
     <div class="cuento">
       <div class="escenario" id="escenario" aria-hidden="true">
-        <figure data-i="0" class="activa"><video muted loop playsinline preload="none" poster="img/escenas/escena01-1600.webp"><source src="video/escenas/clip01a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="1"><video muted loop playsinline preload="none" poster="img/escenas/escena02-1600.webp"><source src="video/escenas/clip02.mp4" type="video/mp4"></video></figure>
-        <figure data-i="2"><video muted loop playsinline preload="none" poster="img/escenas/escena03-1600.webp"><source src="video/escenas/clip03a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="3"><video muted loop playsinline preload="none" poster="img/escenas/escena04-1600.webp"><source src="video/escenas/clip04a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="4"><video muted loop playsinline preload="none" poster="img/escenas/escena05-1600.webp"><source src="video/escenas/clip05a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="5"><video muted loop playsinline preload="none" poster="img/escenas/escena06-1600.webp"><source src="video/escenas/clip06a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="6"><video muted loop playsinline preload="none" poster="img/escenas/escena07-1600.webp"><source src="video/escenas/clip07a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="7"><video muted loop playsinline preload="none" poster="img/escenas/escena08-1600.webp"><source src="video/escenas/clip08a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="8"><video muted loop playsinline preload="none" poster="img/escenas/escena08_borrador-1600.webp"><source src="video/escenas/clip08b.mp4" type="video/mp4"></video></figure>
-        <figure data-i="9"><video muted loop playsinline preload="none" poster="img/escenas/escena09-1600.webp"><source src="video/escenas/clip09a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="10"><video muted loop playsinline preload="none" poster="img/escenas/escena10a-1600.webp"><source src="video/escenas/clip10a.mp4" type="video/mp4"></video></figure>
-        <figure data-i="11"><video muted loop playsinline preload="none" poster="img/escenas/escena10-1600.webp"><source src="video/escenas/clip10b.mp4" type="video/mp4"></video></figure>
+        <figure data-i="0" class="activa"><video muted playsinline preload="none" poster="img/escenas/escena01-1600.webp"><source src="video/escenas/clip01a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="1"><video muted playsinline preload="none" poster="img/escenas/escena02-1600.webp"><source src="video/escenas/clip02.mp4" type="video/mp4"></video></figure>
+        <figure data-i="2"><video muted playsinline preload="none" poster="img/escenas/escena03-1600.webp"><source src="video/escenas/clip03a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="3"><video muted playsinline preload="none" poster="img/escenas/escena04-1600.webp"><source src="video/escenas/clip04a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="4"><video muted playsinline preload="none" poster="img/escenas/escena05-1600.webp"><source src="video/escenas/clip05a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="5"><video muted playsinline preload="none" poster="img/escenas/escena06-1600.webp"><source src="video/escenas/clip06a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="6"><video muted playsinline preload="none" poster="img/escenas/escena07-1600.webp"><source src="video/escenas/clip07a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="7"><video muted playsinline preload="none" poster="img/escenas/escena08-1600.webp"><source src="video/escenas/clip08a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="8"><video muted playsinline preload="none" poster="img/escenas/escena08_borrador-1600.webp"><source src="video/escenas/clip08b.mp4" type="video/mp4"></video></figure>
+        <figure data-i="9"><video muted playsinline preload="none" poster="img/escenas/escena09-1600.webp"><source src="video/escenas/clip09a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="10"><video muted playsinline preload="none" poster="img/escenas/escena10a-1600.webp"><source src="video/escenas/clip10a.mp4" type="video/mp4"></video></figure>
+        <figure data-i="11"><video muted playsinline preload="none" poster="img/escenas/escena10-1600.webp"><source src="video/escenas/clip10b.mp4" type="video/mp4"></video></figure>
         <div class="fx" id="fx"></div>
         <div class="puntos" id="puntos"></div>
         <span class="pagina" id="numPagina">1 / 12</span>
@@ -481,9 +485,12 @@ footer a{color:var(--cielo);font-weight:700}
     </div>
 
     <div class="acciones-cuento">
-      <button class="btn btn-tinta" id="abrirLibro" type="button">Hojear el libro</button>
-      <a class="btn btn-oro" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener">Abrir el cuento en PDF</a>
-      <a class="btn btn-tinta" href="#" data-enlace="cuentoImprimir" aria-disabled="true">PDF A4 para imprimir · próximamente</a>
+      <h3>El libro, página a página</h3>
+      <div class="botones">
+        <button class="btn btn-tinta" id="abrirLibro" type="button">Hojear el libro</button>
+        <a class="btn btn-oro" href="pdf/Angelito_Burlon_cuento.pdf" target="_blank" rel="noopener">Abrir el cuento en PDF</a>
+        <a class="btn btn-tinta" href="#" data-enlace="cuentoImprimir" aria-disabled="true">PDF A4 para imprimir · próximamente</a>
+      </div>
     </div>
     <p class="credito" style="padding-bottom:70px">Adaptación libre del cuento «Rastro de Dios», de Montserrat del Amo (Ediciones SM, colección El Barco de Vapor). Edición: Escuelas Salesianas María Auxiliadora · Nervión · Sevilla.</p>
   </div>
@@ -659,43 +666,57 @@ if(!reducido) addEventListener('pointermove',e=>{ if(scrollY>innerHeight)return;
   function tam(){const r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
     est=Array.from({length:Math.round(W*H/9000)},()=>({x:Math.random()*W,y:Math.random()*H*.7,r:Math.random()*1.4+.3,f:Math.random()*6.28,v:Math.random()*.02+.008}))}
   tam();addEventListener('resize',tam);
-  function dib(){x.clearRect(0,0,W,H);
+  function dib1(){x.clearRect(0,0,W,H);
     for(const s of est){s.f+=s.v;const a=.35+.65*Math.abs(Math.sin(s.f));x.globalAlpha=a;x.fillStyle='#fff6d0';x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill();
       if(s.r>1.4){x.globalAlpha=a*.5;x.fillRect(s.x-s.r*3,s.y-.4,s.r*6,.8);x.fillRect(s.x-.4,s.y-s.r*3,.8,s.r*6)}}
     if(!fug&&Math.random()<.006)fug={x:Math.random()*W*.8+W*.2,y:Math.random()*H*.35,l:0};
     if(fug){fug.l+=1;const k=fug.l*9;const g=x.createLinearGradient(fug.x-k,fug.y+k*.4,fug.x-k+120,fug.y+k*.4-48);g.addColorStop(0,'rgba(255,231,163,0)');g.addColorStop(1,'rgba(255,240,200,.95)');
       x.globalAlpha=1-fug.l/50;x.strokeStyle=g;x.lineWidth=2;x.beginPath();x.moveTo(fug.x-k,fug.y+k*.4);x.lineTo(fug.x-k+120,fug.y+k*.4-48);x.stroke();if(fug.l>50)fug=null}
-    x.globalAlpha=1;requestAnimationFrame(dib)}
-  if(!reducido)dib();
+    x.globalAlpha=1}
+  let vis=true,corre=false;const arranca=()=>{if(!corre&&vis&&!reducido){corre=true;requestAnimationFrame(paso)}};
+  function paso(){if(!vis){corre=false;return}dib1();requestAnimationFrame(paso)}
+  new IntersectionObserver(es=>{vis=es[0].isIntersecting;arranca()}).observe(c);arranca();
 })();
 
 /* ---------- polvo de estrellas que sigue al dedo o al ratón ---------- */
 (()=>{if(reducido)return;const c=document.getElementById('polvo'),x=c.getContext('2d');let W,H,p=[];
   function tam(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0)}tam();addEventListener('resize',tam);
-  function suelta(cx,cy,n,f=1){for(let i=0;i<n;i++)p.push({x:cx,y:cy,vx:(Math.random()-.5)*1.6*f,vy:(Math.random()-.2)*1.6*f,v:1,r:Math.random()*2.4+.8,h:Math.random()<.3})}
+  let vivo=false;function suelta(cx,cy,n,f=1){if(!vivo){vivo=true;requestAnimationFrame(dib)}for(let i=0;i<n;i++)p.push({x:cx,y:cy,vx:(Math.random()-.5)*1.6*f,vy:(Math.random()-.2)*1.6*f,v:1,r:Math.random()*2.4+.8,h:Math.random()<.3})}
   let ult=0;addEventListener('pointermove',e=>{const t=performance.now();if(t-ult<16)return;ult=t;suelta(e.clientX,e.clientY,2)},{passive:true});
   window.explosion=(cx,cy)=>suelta(cx,cy,60,4);
   function dib(){x.clearRect(0,0,W,H);p=p.filter(s=>s.v>0);for(const s of p){s.x+=s.vx;s.y+=s.vy;s.vy+=.03;s.v-=.018;x.globalAlpha=Math.max(s.v,0);x.fillStyle=s.h?'#ffffff':'#f5c451';
     if(s.r>2.4){x.beginPath();for(let k=0;k<4;k++){const a=k*Math.PI/2;x.lineTo(s.x+Math.cos(a)*s.r*1.8,s.y+Math.sin(a)*s.r*1.8);x.lineTo(s.x+Math.cos(a+.785)*s.r*.5,s.y+Math.sin(a+.785)*s.r*.5)}x.fill()}
-    else{x.beginPath();x.arc(s.x,s.y,s.r*.7,0,6.28);x.fill()}}x.globalAlpha=1;requestAnimationFrame(dib)}dib();
+    else{x.beginPath();x.arc(s.x,s.y,s.r*.7,0,6.28);x.fill()}}x.globalAlpha=1;if(p.length)requestAnimationFrame(dib);else vivo=false}
 })();
 
-/* ---------- la estela dorada que recorre la web, con el angelito volando ---------- */
-(()=>{const main=document.getElementById('main'),svg=document.getElementById('estela'),base=svg.querySelector('.base'),luz=svg.querySelector('.luz'),vol=document.getElementById('volador');let L=0;
-  function traza(){const W=main.clientWidth,H=main.scrollHeight;svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-    const y0=innerHeight*.55,margen=Math.min(60,W*.06);let d=`M ${W*.62} ${y0}`;const tramos=Math.max(6,Math.round(H/700));const paso=(H-y0-200)/tramos;
-    for(let i=1;i<=tramos;i++){const izq=i%2===1;const xe=izq?margen:W-margen;const ye=y0+paso*i;d+=` C ${izq?W*.9:W*.1} ${ye-paso*.75}, ${izq?W*.1:W*.9} ${ye-paso*.35}, ${xe} ${ye}`}
-    base.setAttribute('d',d);luz.setAttribute('d',d);L=luz.getTotalLength();luz.style.strokeDasharray=L;mueve()}
-  // el angelito vuela siempre a la altura de lo que se está leyendo (algo por encima de la mitad de la pantalla)
-  function largoEnY(y){let lo=0,hi=L;for(let k=0;k<22;k++){const m=(lo+hi)/2;if(luz.getPointAtLength(m).y<y)lo=m;else hi=m}return lo}
-  function mueve(){if(!L)return;const top=main.getBoundingClientRect().top+scrollY;const objetivo=scrollY-top+innerHeight*.42;
-    const l=largoEnY(objetivo);luz.style.strokeDashoffset=L-l;
-    const pt=luz.getPointAtLength(l),pt2=luz.getPointAtLength(Math.min(L,l+4));const dir=pt2.x<pt.x?-1:1;
-    const w=vol.offsetWidth;const x=Math.min(Math.max(pt.x-w/2,8),main.clientWidth-w-8);vol.style.transform=`translate(${x}px,${pt.y-w*.7}px) scaleX(${dir})`}
-  if(reducido){svg.style.display='none';return}
-  addEventListener('scroll',()=>requestAnimationFrame(mueve),{passive:true});addEventListener('load',traza);traza();let rt;new ResizeObserver(()=>{clearTimeout(rt);rt=setTimeout(traza,150)}).observe(main);
+/* ---------- la estela dorada que recorre la web, con el angelito volando ----------
+   La curva se calcula una vez (tabla de puntos) y solo se dibuja el trozo visible en un lienzo fijo:
+   así el scroll va fluido aunque la página sea muy larga. */
+(()=>{const main=document.getElementById('main'),svg=document.getElementById('estela'),base=svg.querySelector('.base'),vol=document.getElementById('volador'),cv=document.getElementById('estelaLuz'),cx=cv.getContext('2d');
+  if(reducido){svg.style.display='none';cv.remove();vol.remove();return}
+  let PX=[],PY=[],paso=8,W=0,dpr=1;
+  function traza(){W=main.clientWidth;const H=main.scrollHeight;svg.setAttribute('width',W);svg.setAttribute('height',H);svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    // la estela baja por los márgenes (fuera del texto) y cruza de un lado a otro con una curva rápida
+    const gut=Math.max(28,(W-Math.min(W,1180))/4+16),xi=gut,xd=W-gut,y0=innerHeight*.5;const tramos=Math.max(4,Math.round(H/1400));const t=(H-y0-200)/tramos;
+    let d=`M ${W*.62} ${y0} C ${W*.62} ${y0+t*.2}, ${xd} ${y0+t*.1}, ${xd} ${y0+t*.3}`;let lado=xd,y=y0+t*.3;
+    for(let i=0;i<tramos;i++){const yb=y0+t*(i+1)-t*.32;d+=` L ${lado} ${yb}`;const otro=lado===xd?xi:xd;const ye=yb+t*.3;d+=` C ${lado} ${yb+t*.2}, ${otro} ${ye-t*.2}, ${otro} ${ye}`;lado=otro;y=ye}
+    base.setAttribute('d',d);const L=base.getTotalLength();PX=[];PY=[];for(let l=0;l<=L;l+=paso){const p=base.getPointAtLength(l);PX.push(p.x);PY.push(p.y)}
+    dpr=Math.min(devicePixelRatio||1,2);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;mueve()}
+  const indiceEnY=y=>{let lo=0,hi=PY.length-1;while(lo<hi){const m=(lo+hi)>>1;if(PY[m]<y)lo=m+1;else hi=m}return lo};
+  let destino=0;
+  function dibuja(){const off=main.getBoundingClientRect().top;cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,innerWidth,innerHeight);
+    const k=Math.max(1,Math.min(PX.length-2,Math.round(destino)));
+    const ini=indiceEnY(-off-40),fin=Math.min(k,indiceEnY(-off+innerHeight+40));if(fin>ini){
+      cx.beginPath();cx.moveTo(PX[ini],PY[ini]+off);for(let i=ini+1;i<=fin;i++)cx.lineTo(PX[i],PY[i]+off);
+      cx.lineCap='round';cx.lineJoin='round';cx.strokeStyle='rgba(255,214,120,.22)';cx.lineWidth=10;cx.stroke();cx.strokeStyle='rgba(255,236,170,.95)';cx.lineWidth=2.6;cx.stroke()}
+    const a=Math.max(0,k-6),dx=PX[k]-PX[a],dy=PY[k]-PY[a];const dir=dx<0?-1:1;const ang=Math.max(-25,Math.min(25,Math.atan2(dy,Math.abs(dx)+.01)*57.3*.35));
+    const w=vol.offsetWidth;vol.style.transform=`translate(${PX[k]-w*.5}px,${PY[k]-w*.55}px) scaleX(${dir}) rotate(${ang}deg)`}
+  let pendiente=false;
+  function mueve(){if(!PY.length||pendiente)return;pendiente=true;requestAnimationFrame(()=>{pendiente=false;const off=main.getBoundingClientRect().top;destino=indiceEnY(-off+innerHeight*.6);dibuja()})}
+  addEventListener('scroll',mueve,{passive:true});addEventListener('load',traza);traza();
+  let rt,hPrev=0;new ResizeObserver(()=>{const h=main.scrollHeight;if(Math.abs(h-hPrev)<4&&W===main.clientWidth)return;hPrev=h;clearTimeout(rt);rt=setTimeout(traza,200)}).observe(main);
+  addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(traza,200)});
 })();
-
 
 /* ---------- motion graphics del cuento ---------- */
 (()=>{
@@ -771,7 +792,8 @@ const FX=(()=>{const capa=document.getElementById('fx');
 /* ---------- portada: clip animado de fondo ---------- */
 (()=>{const v=document.getElementById('videoHero');if(reducido){v.remove();return}
   v.addEventListener('playing',()=>v.classList.add('lista'),{once:true});
-  new IntersectionObserver(es=>{es[0].isIntersecting?v.play().catch(()=>{}):v.pause()}).observe(v);
+  // se reproduce una sola vez y se queda en el último fotograma
+  new IntersectionObserver(es=>{if(v.ended)return;es[0].isIntersecting?v.play().catch(()=>{}):v.pause()}).observe(v);
 })();
 
 /* ---------- aplicación instalable (PWA) ---------- */
