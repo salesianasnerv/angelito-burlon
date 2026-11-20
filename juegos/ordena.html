@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ordena el cuento · Angelito Burlón</title>
+<meta name="description" content="Pon en orden las escenas del cuento Angelito Burlón y la estrella de Navidad.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+body{background:radial-gradient(ellipse at 50% 0%,#1f3aa6 0%,var(--noche) 70%) fixed}
+main{max-width:1100px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-left)) 40px;display:grid;gap:16px;justify-items:center}
+.estado{font-family:var(--f-cuento);font-size:1.15rem;color:#dfe5ff;text-align:center;min-height:1.6em;margin:0}
+.huecos,.bandeja{display:grid;gap:clamp(8px,1.4vw,14px);width:100%}
+.huecos{grid-template-columns:repeat(var(--n),1fr)}
+.bandeja{grid-template-columns:repeat(var(--n),1fr);min-height:60px}
+@media (max-width:700px){.huecos,.bandeja{grid-template-columns:repeat(min(var(--n),3),1fr)}}
+.hueco{position:relative;aspect-ratio:4/3;border-radius:16px;border:3px dashed rgba(245,196,81,.55);display:grid;place-items:center;background:rgba(255,255,255,.04)}
+.hueco>.num{font-family:var(--f-titulo);font-size:clamp(2rem,5vw,3.2rem);color:rgba(245,196,81,.6)}
+.hueco .carta{position:absolute;inset:0}
+.carta{position:relative;border:3px solid var(--oro);border-radius:16px;padding:0;overflow:hidden;background:var(--papel);box-shadow:0 6px 16px rgba(0,0,0,.35);aspect-ratio:4/3;transition:transform .2s}
+.carta img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.carta:hover{transform:translateY(-3px)}
+.carta.ok{border-color:#7be3a3;box-shadow:0 0 0 3px #7be3a3,0 0 22px rgba(123,227,163,.7)}
+.carta.ko{animation:temblor .4s}
+@keyframes temblor{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.carta .leyenda{position:absolute;left:0;right:0;bottom:0;padding:4px 6px;background:rgba(255,246,230,.92);color:var(--tinta);font-family:var(--f-cuento);font-size:clamp(.7rem,1.3vw,.9rem);line-height:1.15}
+.etq{font-weight:800;color:var(--oro-claro);letter-spacing:.04em;text-transform:uppercase;font-size:.85rem;justify-self:start}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>Ordena el cuento</h1>
+  <span class="marca" id="marca"></span>
+</header>
+<main>
+  <div class="niveles" role="group" aria-label="Nivel">
+    <button class="btn" data-nivel="4" type="button">Infantil · 4 escenas</button>
+    <button class="btn sec" data-nivel="6" type="button">1.º a 3.º · 6 escenas</button>
+  </div>
+  <p class="estado" id="estado" aria-live="polite"></p>
+  <span class="etq">¿Qué pasó primero?</span>
+  <div class="huecos" id="huecos"></div>
+  <span class="etq">Las escenas</span>
+  <div class="bandeja" id="bandeja"></div>
+</main>
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-risa.webp" alt="">
+    <h2>¡Cuento ordenado!</h2>
+    <p id="textoFinal"></p>
+    <div class="niveles"><button class="btn" id="otraVez" type="button">Jugar otra vez</button><a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a></div>
+  </div>
+</div>
+<script src="comun.js"></script>
+<script>
+(()=>{
+const TODAS={
+  4:[['escena03','Dios le da la estrella'],['escena06','¡Empieza a volar!'],['escena07','Los Reyes siguen la estrella'],['escena08','Llegan a Belén']],
+  6:[['escena02','Aprende a volar'],['escena03','Dios le da la estrella'],['escena05','¡Esta noche nace Jesús!'],['escena06','Un caminito de luz'],['escena07','Los Reyes siguen la estrella'],['escena08','Llegan a Belén']]};
+const H=document.getElementById('huecos'),B=document.getElementById('bandeja'),est=document.getElementById('estado'),marca=document.getElementById('marca');
+let n,escenas,colocadas,intentos;
+function carta(e,i){const b=document.createElement('button');b.type='button';b.className='carta';b.dataset.i=i;
+  b.innerHTML=`<img src="../img/escenas/${e[0]}-800.webp" alt="${e[1]}" draggable="false"><span class="leyenda">${e[1]}</span>`;
+  b.addEventListener('click',()=>toca(b));return b}
+function empieza(nv){n=+nv;escenas=TODAS[n];colocadas=Array(n).fill(null);intentos=0;document.getElementById('final').hidden=true;
+  H.style.setProperty('--n',n);B.style.setProperty('--n',n);H.innerHTML='';B.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='hueco';d.innerHTML=`<span class="num">${i+1}</span>`;H.appendChild(d)}
+  AB.baraja(escenas.map((e,i)=>[e,i])).forEach(([e,i])=>B.appendChild(carta(e,i)));
+  est.textContent='Toca las escenas en el orden en que pasan en el cuento.';marca.textContent=`0 / ${n}`}
+function toca(b){
+  const enHueco=b.parentElement.classList.contains('hueco');
+  if(enHueco){if(b.classList.contains('ok'))return;const k=[...H.children].indexOf(b.parentElement);colocadas[k]=null;B.appendChild(b);AB.nota(400,.1);return}
+  const k=colocadas.indexOf(null);if(k<0)return;colocadas[k]=+b.dataset.i;H.children[k].appendChild(b);AB.nota(520,.12);
+  if(!colocadas.includes(null))setTimeout(comprueba,350)}
+function comprueba(){intentos++;let bien=0;
+  [...H.children].forEach((h,k)=>{const c=h.querySelector('.carta');if(+c.dataset.i===k){c.classList.add('ok');bien++}else{c.classList.add('ko');setTimeout(()=>{c.classList.remove('ko');colocadas[k]=null;B.appendChild(c)},450)}});
+  marca.textContent=`${bien} / ${n}`;
+  if(bien===n){AB.fin(intentos===1?'¡A la primera! Te sabes el cuento de maravilla.':`Lo has conseguido en ${intentos} intentos. ¡Muy bien!`)}
+  else{AB.mal();est.textContent=bien?`¡${bien} en su sitio! Las demás vuelven abajo: piensa qué pasó antes.`:'Uy, ninguna en su sitio. ¿Qué pasó al principio del cuento?'}}
+document.getElementById('otraVez').addEventListener('click',()=>empieza(n));
+empieza(AB.niveles('angelito-ordena-n','4',empieza));
+})();
+</script>
+</body>
+</html>

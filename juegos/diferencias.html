@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Las diferencias · Angelito Burlón</title>
+<meta name="description" content="El Angelito Burlón ha hecho travesuras en las escenas del cuento: encuentra las 6 diferencias.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+body{background:radial-gradient(ellipse at 50% 0%,#1f3aa6 0%,var(--noche) 70%) fixed}
+main{max-width:1400px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left)) 40px;display:grid;gap:14px;justify-items:center}
+.estado{font-family:var(--f-cuento);font-size:1.15rem;color:#dfe5ff;text-align:center;min-height:1.6em;margin:0}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+@media (max-width:800px),(orientation:portrait){.par{grid-template-columns:1fr;max-width:640px}}
+.foto{position:relative;border-radius:18px;overflow:hidden;border:4px solid var(--oro);box-shadow:0 10px 26px rgba(0,0,0,.4);cursor:pointer;touch-action:manipulation}
+.foto img{width:100%;display:block;pointer-events:none;user-select:none}
+.foto .etq{position:absolute;left:10px;top:10px;padding:3px 10px;border-radius:999px;background:rgba(12,21,66,.75);color:var(--oro-claro);font-weight:800;font-size:.8rem}
+.marca-dif{position:absolute;border:4px solid #7be3a3;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(255,255,255,.7),0 0 18px rgba(123,227,163,.9);pointer-events:none;animation:aparece .4s cubic-bezier(.3,1.6,.5,1)}
+.marca-dif.pista{border-color:var(--oro);border-style:dashed;animation:late 1s 3}
+.fallo{position:absolute;color:#ff6b6b;font-weight:800;font-size:28px;transform:translate(-50%,-50%);pointer-events:none;animation:fuera .8s forwards}
+@keyframes aparece{from{transform:translate(-50%,-50%) scale(.2)}}
+@keyframes late{50%{transform:translate(-50%,-50%) scale(1.2)}}
+@keyframes fuera{to{opacity:0;transform:translate(-50%,-90%)}}
+.contador{display:flex;gap:6px}
+.contador span{width:26px;height:26px;color:rgba(255,255,255,.25)}
+.contador span.si{color:var(--oro)}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>Las diferencias</h1>
+  <span class="marca" id="marca"></span>
+</header>
+<main>
+  <div class="niveles" role="group" aria-label="Escena">
+    <button class="btn" data-nivel="clase" type="button">En clase</button>
+    <button class="btn sec" data-nivel="reyes" type="button">Los Reyes Magos</button>
+    <button class="btn sec" data-nivel="vuelo" type="button">El vuelo</button>
+  </div>
+  <p class="estado" id="estado" aria-live="polite">El Angelito Burlón ha hecho de las suyas en el dibujo de abajo: ¡encuentra las 6 diferencias y tócalas!</p>
+  <div class="contador" id="contador" aria-hidden="true"></div>
+  <div class="par">
+    <div class="foto" id="fa"><img id="ia" alt="Escena original"><span class="etq">Original</span></div>
+    <div class="foto" id="fb"><img id="ib" alt="Escena con travesuras del angelito"><span class="etq">Con travesuras</span></div>
+  </div>
+  <button class="btn sec" id="pista" type="button">Dame una pista</button>
+</main>
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-risa.webp" alt="">
+    <h2>¡Las has encontrado todas!</h2>
+    <p id="textoFinal"></p>
+    <div class="niveles"><button class="btn" id="otraVez" type="button">Otra escena</button><a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a></div>
+  </div>
+</div>
+<script src="comun.js"></script>
+<script>
+(()=>{
+// zonas: [x % del ancho, y % del alto, radio % del ancho] · generadas con fuentes/diferencias.py
+const ESC={"clase":{"alto":675,"zonas":[[74.17,10.67,4.0],[21.5,22.22,4.58],[51.0,19.56,2.33],[11.67,57.04,7.92],[58.0,9.78,3.0],[86.33,29.63,4.58]]},"reyes":{"alto":676,"zonas":[[39.17,31.36,3.5],[57.5,58.43,6.25],[58.33,17.75,2.33],[76.33,40.68,3.0],[88.5,93.49,6.25],[45.42,68.79,2.5]]},"vuelo":{"alto":676,"zonas":[[25.0,48.82,2.5],[50.83,22.19,2.33],[12.92,11.83,2.33],[74.75,6.66,2.5],[82.08,14.05,2.33],[90.0,30.33,3.75]]}};
+const ORDEN=['clase','reyes','vuelo'];
+const fa=document.getElementById('fa'),fb=document.getElementById('fb'),est=document.getElementById('estado'),marca=document.getElementById('marca'),cont=document.getElementById('contador');
+let clave,hechas,fallos,pistas;
+function empieza(k){clave=k;hechas=new Set();fallos=0;pistas=0;document.getElementById('final').hidden=true;
+  document.getElementById('ia').src=`../img/juegos/dif-${k}-a.webp`;document.getElementById('ib').src=`../img/juegos/dif-${k}-b.webp`;
+  document.querySelectorAll('.marca-dif').forEach(m=>m.remove());pinta();est.textContent='El Angelito Burlón ha hecho de las suyas en uno de los dibujos: ¡encuentra las 6 diferencias y tócalas!'}
+function pinta(){const z=ESC[clave].zonas.length;marca.textContent=`${hechas.size} / ${z}`;cont.innerHTML=ESC[clave].zonas.map((_,i)=>`<span class="${i<hechas.size?'si':''}">${AB.ESTRELLA}</span>`).join('')}
+function circulo(i,pista){const [x,y,r]=ESC[clave].zonas[i];[fa,fb].forEach(f=>{const m=document.createElement('span');m.className='marca-dif'+(pista?' pista':'');m.dataset.i=i;
+  const d=Math.max(r,3.2)*2.4;m.style.cssText=`left:${x}%;top:${y}%;width:${d}%;aspect-ratio:1`;f.appendChild(m);if(pista)setTimeout(()=>m.remove(),3200)})}
+function toca(e,f){const r=f.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*100,py=(e.clientY-r.top)/r.height*100;const al=ESC[clave].alto/1200;
+  let mejor=-1,dm=1e9;ESC[clave].zonas.forEach(([x,y,rr],i)=>{if(hechas.has(i))return;const dx=px-x,dy=(py-y)*al,d=Math.hypot(dx,dy);if(d<Math.max(rr,3.2)*1.25&&d<dm){dm=d;mejor=i}});
+  if(mejor>=0){hechas.add(mejor);circulo(mejor);AB.bien();pinta();
+    const total=ESC[clave].zonas.length;est.textContent=hechas.size<total?`¡Bien visto! Te quedan ${total-hechas.size}.`:'';
+    if(hechas.size===total){const sig=ORDEN[(ORDEN.indexOf(clave)+1)%ORDEN.length];document.getElementById('otraVez').dataset.sig=sig;
+      setTimeout(()=>AB.fin(fallos+pistas===0?'¡Sin fallos y sin pistas! Ojo de águila.':`Con ${fallos} toque${fallos===1?'':'s'} de más y ${pistas} pista${pistas===1?'':'s'}. ¡Muy bien!`),700)}}
+  else{fallos++;const m=document.createElement('span');m.className='fallo';m.textContent='✕';m.style.cssText=`left:${px}%;top:${py}%`;f.appendChild(m);setTimeout(()=>m.remove(),800);AB.nota(200,.12,0,'sine',.06)}}
+[fa,fb].forEach(f=>f.addEventListener('pointerdown',e=>toca(e,f)));
+document.getElementById('pista').addEventListener('click',()=>{const q=ESC[clave].zonas.map((_,i)=>i).filter(i=>!hechas.has(i));if(!q.length)return;pistas++;circulo(q[Math.floor(Math.random()*q.length)],true);est.textContent='Mira dentro del círculo amarillo…'});
+let nivel=AB.niveles('angelito-dif-n','clase',empieza);
+document.getElementById('otraVez').addEventListener('click',e=>{const s=e.currentTarget.dataset.sig||clave;document.querySelector(`[data-nivel="${s}"]`).click()});
+empieza(nivel);
+})();
+</script>
+</body>
+</html>

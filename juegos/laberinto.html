@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>El laberinto de la estrella · Angelito Burlón</title>
+<meta name="description" content="Guía al angelito y su estrella por el laberinto hasta Belén.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+body{background:radial-gradient(ellipse at 50% 0%,#1f3aa6 0%,var(--noche) 70%) fixed}
+main{max-width:900px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left)) 40px;display:grid;gap:14px;justify-items:center}
+.estado{font-family:var(--f-cuento);font-size:1.15rem;color:#dfe5ff;text-align:center;min-height:1.6em;margin:0}
+.caja-lab{width:fit-content;max-width:100%;border-radius:22px;padding:10px;background:linear-gradient(180deg,#14206a,#0c1542);border:3px solid rgba(245,196,81,.55);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+canvas{display:block;width:100%;height:auto;touch-action:none}
+.cruceta{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:8px}
+.cruceta .btn{padding:0;font-size:1.5rem}
+.cruceta [data-d="arriba"]{grid-column:2}
+.cruceta [data-d="izq"]{grid-column:1;grid-row:2}
+.cruceta [data-d="abajo"]{grid-column:2;grid-row:2}
+.cruceta [data-d="der"]{grid-column:3;grid-row:2}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>El laberinto de la estrella</h1>
+  <span class="marca" id="marca"></span>
+</header>
+<main>
+  <div class="niveles" role="group" aria-label="Tamaño">
+    <button class="btn" data-nivel="facil" type="button">Fácil</button>
+    <button class="btn sec" data-nivel="medio" type="button">Medio</button>
+    <button class="btn sec" data-nivel="dificil" type="button">Difícil</button>
+  </div>
+  <p class="estado" id="estado" aria-live="polite">Arrastra el dedo desde el angelito, o usa las flechas, para llevar la estrella hasta Belén.</p>
+  <div class="caja-lab"><canvas id="lab" aria-label="Laberinto"></canvas></div>
+  <div class="cruceta" role="group" aria-label="Flechas">
+    <button class="btn sec" data-d="arriba" type="button" aria-label="Arriba">↑</button>
+    <button class="btn sec" data-d="izq" type="button" aria-label="Izquierda">←</button>
+    <button class="btn sec" data-d="abajo" type="button" aria-label="Abajo">↓</button>
+    <button class="btn sec" data-d="der" type="button" aria-label="Derecha">→</button>
+  </div>
+</main>
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-vuela.webp" alt="">
+    <h2>¡Habéis llegado a Belén!</h2>
+    <p id="textoFinal"></p>
+    <div class="niveles"><button class="btn" id="otraVez" type="button">Otro laberinto</button><a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a></div>
+  </div>
+</div>
+<script src="comun.js"></script>
+<script>
+(()=>{
+const TAM={facil:[6,4],medio:[9,6],dificil:[13,9]};
+const cv=document.getElementById('lab'),cx=cv.getContext('2d'),est=document.getElementById('estado'),marca=document.getElementById('marca');
+const angel=new Image();angel.src='../img/personaje/angelito-vuela.webp';angel.onload=()=>dibuja();
+let C,F,cel,muros,pos,camino,pasos,nivel,ganado;
+const DIR={arriba:[0,-1,0],der:[1,0,1],abajo:[0,1,2],izq:[-1,0,3]};
+function tamCel(){const ancho=Math.min(820,cv.parentElement.clientWidth-20),alto=Math.max(220,innerHeight-(innerWidth>700?300:380));return Math.max(22,Math.floor(Math.min(ancho/C,alto/F)))}
+function genera(){muros=[];for(let i=0;i<C*F;i++)muros.push([1,1,1,1]);// arriba, der, abajo, izq
+  const visto=new Uint8Array(C*F),pila=[0];visto[0]=1;
+  while(pila.length){const c=pila[pila.length-1],x=c%C,y=(c-x)/C;
+    const op=AB.baraja(Object.values(DIR).filter(([dx,dy])=>{const nx=x+dx,ny=y+dy;return nx>=0&&ny>=0&&nx<C&&ny<F&&!visto[ny*C+nx]}));
+    if(!op.length){pila.pop();continue}const [dx,dy,k]=op[0],n=(y+dy)*C+x+dx;muros[c][k]=0;muros[n][(k+2)%4]=0;visto[n]=1;pila.push(n)}}
+function empieza(nv){nivel=nv;[C,F]=TAM[nv];document.getElementById('final').hidden=true;ganado=false;
+  cel=tamCel();
+  const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=C*cel*dpr;cv.height=F*cel*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+  genera();pos=[0,0];camino=[[0,0]];pasos=0;marca.textContent='Pasos: 0';dibuja()}
+function estrella(x,y,r,c){cx.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,rr=i%2?r*.45:r;cx.lineTo(x+rr*Math.cos(a),y+rr*Math.sin(a))}cx.closePath();cx.fillStyle=c;cx.fill()}
+function dibuja(){if(!C)return;const w=C*cel,h=F*cel;cx.clearRect(0,0,w,h);
+  // estrellitas de fondo
+  cx.fillStyle='rgba(255,255,255,.25)';for(let i=0;i<C*F;i++){const x=i%C,y=(i-x)/C;if((x*7+y*13)%5===0)cx.fillRect(x*cel+cel*.7,y*cel+cel*.25,2,2)}
+  // estela
+  cx.strokeStyle='rgba(245,196,81,.55)';cx.lineWidth=Math.max(3,cel*.14);cx.lineCap='round';cx.lineJoin='round';cx.beginPath();
+  camino.forEach(([x,y],i)=>{const px=x*cel+cel/2,py=y*cel+cel/2;i?cx.lineTo(px,py):cx.moveTo(px,py)});cx.stroke();
+  // muros
+  cx.strokeStyle='#f5c451';cx.lineWidth=Math.max(3,cel*.09);cx.beginPath();
+  muros.forEach((m,i)=>{const x=(i%C)*cel,y=Math.floor(i/C)*cel;if(m[0]){cx.moveTo(x,y);cx.lineTo(x+cel,y)}if(m[1]){cx.moveTo(x+cel,y);cx.lineTo(x+cel,y+cel)}if(m[2]){cx.moveTo(x,y+cel);cx.lineTo(x+cel,y+cel)}if(m[3]){cx.moveTo(x,y);cx.lineTo(x,y+cel)}});cx.stroke();
+  // Belén
+  const bx=(C-1)*cel,by=(F-1)*cel;cx.fillStyle='rgba(255,231,163,.18)';cx.fillRect(bx+3,by+3,cel-6,cel-6);
+  cx.font=`${Math.floor(cel*.5)}px serif`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText('🏠',bx+cel/2,by+cel*.56);estrella(bx+cel/2,by+cel*.16,cel*.13,'#fff1a8');
+  cx.fillStyle='#ffe7a3';cx.font=`800 ${Math.max(9,Math.floor(cel*.16))}px Nunito,sans-serif`;cx.fillText('Belén',bx+cel/2,by+cel*.9);
+  // angelito
+  const [x,y]=pos,ax=x*cel+cel*.08,ay=y*cel+cel*.1,s=cel*.84;
+  if(angel.complete&&angel.naturalWidth)cx.drawImage(angel,ax,ay,s,s*angel.naturalHeight/angel.naturalWidth);else estrella(x*cel+cel/2,y*cel+cel/2,cel*.3,'#f5c451')}
+function mueve(d){if(ganado)return false;const [dx,dy,k]=DIR[d],c=pos[1]*C+pos[0];if(muros[c][k]){AB.nota(160,.08,0,'sine',.05);return false}
+  pos=[pos[0]+dx,pos[1]+dy];const pen=camino[camino.length-2];
+  if(pen&&pen[0]===pos[0]&&pen[1]===pos[1])camino.pop();else camino.push(pos.slice());
+  pasos++;marca.textContent=`Pasos: ${pasos}`;AB.nota(600+((pos[0]+pos[1])%6)*60,.07,0,'triangle',.05);dibuja();
+  if(pos[0]===C-1&&pos[1]===F-1){ganado=true;setTimeout(()=>AB.fin(`La estrella ha llegado al portal en ${pasos} pasos. ¡Los Reyes Magos ya pueden encontrar a Jesús!`),300)}return true}
+document.querySelectorAll('.cruceta [data-d]').forEach(b=>b.addEventListener('click',()=>mueve(b.dataset.d)));
+addEventListener('keydown',e=>{const m={ArrowUp:'arriba',ArrowDown:'abajo',ArrowLeft:'izq',ArrowRight:'der'}[e.key];if(m){e.preventDefault();mueve(m)}});
+let arrastra=false;
+function celda(e){const r=cv.getBoundingClientRect();return[Math.floor((e.clientX-r.left)/r.width*C),Math.floor((e.clientY-r.top)/r.height*F)]}
+cv.addEventListener('pointerdown',e=>{arrastra=true;cv.setPointerCapture(e.pointerId);sigue(e)});
+cv.addEventListener('pointermove',e=>{if(arrastra)sigue(e)});
+cv.addEventListener('pointerup',()=>arrastra=false);cv.addEventListener('pointercancel',()=>arrastra=false);
+function sigue(e){const [x,y]=celda(e);let g=0;
+  while((x!==pos[0]||y!==pos[1])&&g++<4){const dx=x-pos[0],dy=y-pos[1];
+    const pref=Math.abs(dx)>=Math.abs(dy)?[dx>0?'der':'izq',dy>0?'abajo':(dy<0?'arriba':null)]:[dy>0?'abajo':'arriba',dx>0?'der':(dx<0?'izq':null)];
+    if(!(pref[0]&&mueve(pref[0]))&&!(pref[1]&&mueve(pref[1])))break}}
+addEventListener('resize',()=>{const nc=tamCel();if(nc===cel)return;cel=nc;const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=C*cel*dpr;cv.height=F*cel*dpr;cx.setTransform(dpr,0,0,dpr,0,0);dibuja()});
+document.getElementById('otraVez').addEventListener('click',()=>empieza(nivel));
+empieza(AB.niveles('angelito-laberinto-n','facil',empieza));
+})();
+</script>
+</body>
+</html>

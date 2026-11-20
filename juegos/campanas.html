@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Las campanas del Angelito · Angelito Burlón</title>
+<meta name="description" content="Escucha la melodía de las campanas del Angelito Burlón y repítela.">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Kurale&family=Nunito:wght@400;800&display=swap">
+<link rel="stylesheet" href="juegos.css">
+<style>
+body{background:radial-gradient(ellipse at 50% 0%,#1f3aa6 0%,var(--noche) 70%) fixed}
+main{max-width:760px;margin:0 auto;padding:16px max(16px,env(safe-area-inset-left)) 40px;display:grid;gap:16px;justify-items:center}
+.estado{font-family:var(--f-cuento);font-size:1.25rem;color:#dfe5ff;text-align:center;min-height:1.6em;margin:0}
+.campanas{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,3vw,26px);width:min(100%,560px)}
+.camp{--c:#f5c451;aspect-ratio:1;border-radius:32px;border:4px solid color-mix(in srgb,var(--c) 70%,#000);background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--c) 55%,#fff),var(--c));box-shadow:0 8px 0 color-mix(in srgb,var(--c) 55%,#000),0 14px 26px rgba(0,0,0,.4);display:grid;place-items:center;padding:14%;transition:transform .1s,filter .15s}
+.camp svg{width:100%;height:100%;transform-origin:50% 8%}
+.camp.suena{transform:translateY(4px);box-shadow:0 4px 0 color-mix(in srgb,var(--c) 55%,#000),0 0 40px 10px color-mix(in srgb,var(--c) 70%,transparent);filter:brightness(1.25)}
+.camp.suena svg{animation:tilin .45s}
+@keyframes tilin{25%{transform:rotate(14deg)}60%{transform:rotate(-12deg)}}
+.campanas.espera .camp{pointer-events:none}
+.record{color:var(--oro-claro);font-weight:800}
+</style>
+</head>
+<body>
+<header class="barra">
+  <a class="volver" href="../index.html#juego" aria-label="Volver a la web"><span aria-hidden="true">←</span> Volver</a>
+  <h1>Las campanas del Angelito</h1>
+  <span class="marca" id="marca"></span>
+</header>
+<main>
+  <div class="niveles" role="group" aria-label="Velocidad">
+    <button class="btn" data-nivel="lento" type="button">Despacito</button>
+    <button class="btn sec" data-nivel="normal" type="button">Más rápido</button>
+  </div>
+  <p class="estado" id="estado" aria-live="polite">El angelito toca una melodía. Escúchala y repítela tocando las campanas.</p>
+  <div class="campanas espera" id="campanas"></div>
+  <button class="btn" id="empezar" type="button">¡Empezar!</button>
+  <p class="record" id="record"></p>
+</main>
+<div class="panel" id="final" hidden>
+  <div class="caja">
+    <img class="angel" src="../img/personaje/angelito-risa.webp" alt="">
+    <h2 id="tituloFinal">¡Ji, ji, ji!</h2>
+    <p id="textoFinal"></p>
+    <div class="niveles"><button class="btn" id="otraVez" type="button">Jugar otra vez</button><a class="btn sec" href="../index.html#juego" style="text-decoration:none">Otros juegos</a></div>
+  </div>
+</div>
+<script src="comun.js"></script>
+<script>
+(()=>{
+const CAMP=[{c:'#f5c451',f:523.25,nom:'amarilla'},{c:'#e2445c',f:659.25,nom:'roja'},{c:'#4f7cff',f:783.99,nom:'azul'},{c:'#2f9e5b',f:880,nom:'verde'}];
+const BELL='<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8c-4 0-6 3-6 6-14 3-22 15-22 32 0 14-6 20-12 26h80c-6-6-12-12-12-26 0-17-8-29-22-32 0-3-2-6-6-6z" fill="#fff6e6" stroke="#1d2454" stroke-width="4" stroke-linejoin="round"/><circle cx="50" cy="82" r="8" fill="#fff6e6" stroke="#1d2454" stroke-width="4"/><path d="M36 40c2-8 6-12 12-14" stroke="#1d2454" stroke-width="3" fill="none" stroke-linecap="round" opacity=".4"/></svg>';
+const C=document.getElementById('campanas'),est=document.getElementById('estado'),marca=document.getElementById('marca'),rec=document.getElementById('record');
+let vel='lento',serie=[],turno=0,jugando=false,mejor=AB.guarda.get('angelito-campanas-record',0);
+CAMP.forEach((k,i)=>{const b=document.createElement('button');b.type='button';b.className='camp';b.style.setProperty('--c',k.c);b.innerHTML=BELL;b.setAttribute('aria-label','Campana '+k.nom);
+  b.addEventListener('pointerdown',e=>{e.preventDefault();pulsa(i)});b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pulsa(i)}});C.appendChild(b)});
+function suena(i){const b=C.children[i];b.classList.add('suena');AB.nota(CAMP[i].f,.6,0,'sine',.16);AB.nota(CAMP[i].f*2,.4,0,'triangle',.04);setTimeout(()=>b.classList.remove('suena'),vel==='lento'?420:280)}
+function pinta(){marca.textContent=`Notas: ${Math.max(0,serie.length-(jugando?1:0))}`;rec.textContent=mejor?`Tu récord: ${mejor} notas`:''}
+function ronda(){serie.push(Math.floor(Math.random()*4));turno=0;C.classList.add('espera');est.textContent='Escucha…';marca.textContent=`Notas: ${serie.length}`;
+  const p=vel==='lento'?800:520;serie.forEach((n,k)=>setTimeout(()=>suena(n),600+k*p));
+  setTimeout(()=>{C.classList.remove('espera');est.textContent='¡Ahora tú!'},600+serie.length*p)}
+function empieza(){serie=[];jugando=true;document.getElementById('final').hidden=true;document.getElementById('empezar').hidden=true;ronda()}
+function pulsa(i){if(!jugando||C.classList.contains('espera'))return;suena(i);
+  if(i!==serie[turno]){jugando=false;C.classList.add('espera');const hechas=serie.length-1;setTimeout(AB.mal,300);
+    if(hechas>mejor){mejor=hechas;AB.guarda.set('angelito-campanas-record',mejor)}
+    document.getElementById('tituloFinal').textContent=hechas>=5?'¡Qué oído!':'¡Ji, ji, ji!';
+    setTimeout(()=>AB.fin(hechas?`Has repetido una melodía de ${hechas} nota${hechas>1?'s':''}. ${hechas>=mejor?'¡Es tu récord!':'Tu récord es de '+mejor+'.'}`:'¡El angelito te ha despistado! Prueba otra vez, escuchando con atención.'),700);pinta();return}
+  turno++;if(turno===serie.length){est.textContent=['¡Muy bien!','¡Bravo!','¡Genial!','¡Así se toca!'][serie.length%4];C.classList.add('espera');setTimeout(ronda,900)}}
+document.getElementById('empezar').addEventListener('click',empieza);
+document.getElementById('otraVez').addEventListener('click',empieza);
+vel=AB.niveles('angelito-campanas-vel','lento',v=>{vel=v});pinta();
+})();
+</script>
+</body>
+</html>
