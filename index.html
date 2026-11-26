@@ -315,6 +315,8 @@ p{margin:0}
 .tarjeta .chip{justify-self:start}
 .tarjeta .carta{margin-top:-2px;padding:10px 20px;font-size:.92rem}
 .tarjeta .carta[aria-disabled]{display:none}
+.tarjeta .carta span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}
+.tarjeta .carta small{font-size:.72rem;opacity:.75;font-weight:500;margin-top:2px}
 .tarjeta .acc{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .tarjeta .acc .btn{margin:0}
 @media (max-width:960px){.tarjetas{grid-template-columns:1fr}.tarjeta{transform:none}}
@@ -694,6 +696,7 @@ footer a{color:var(--cielo);font-weight:700}
           <p>Ideas sencillas para que el Angelito Burlón visite también vuestra casa y preparéis juntos la Navidad.</p>
           <div class="acc">
           <a class="btn btn-oro" href="#" data-enlace="familias" aria-disabled="true"><span>Ver proyecto</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4 4.6-4.6H4v-2h12.2l-4.6-4.6z"/></svg></a>
+          <a class="carta btn btn-tinta" href="#" data-enlace="triptico" aria-disabled="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5l6.5-2 7 2L22 3v16l-6.5 2-7-2L2 21zm2 1.5v11.6l3.5-1.1V5.4zm5.5-1.1v11.6l5 1.4V6.8zm7 1.4v11.6l3.5-1.1V5.4z"/></svg><span>Tríptico<small>PDF A4 · 2 caras</small></span></a>
           </div>
         </div>
       </article>
@@ -830,6 +833,7 @@ const ENLACES = {
   familias: 'pdf/Angelito_Burlon_Familias.pdf',
   cartaInfantil: 'pdf/Carta_Angelito_Burlon_Infantil.pdf',
   cartaPrimaria: 'pdf/Carta_Angelito_Burlon_1-3_Primaria.pdf',
+  triptico: 'pdf/Angelito_Burlon_triptico_familias.pdf',
   cuentoImprimir: 'pdf/Angelito_Burlon_A4_para_imprimir.pdf'
 };
 
@@ -839,7 +843,7 @@ const guarda = { get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catc
 /* ---------- enlaces y marcadores de «próximamente» ---------- */
 document.querySelectorAll('[data-enlace]').forEach(a=>{
   const url = ENLACES[a.dataset.enlace];
-  if(url){ a.href=url; a.target='_blank'; a.rel='noopener'; a.removeAttribute('aria-disabled'); {const sp=a.querySelector('span')||a;sp.textContent=sp.textContent.replace(' · próximamente','')}
+  if(url){ a.href=url; a.target='_blank'; a.rel='noopener'; a.removeAttribute('aria-disabled'); {const sp=a.querySelector('span')||a;if(sp.textContent.includes(' · próximamente'))sp.textContent=sp.textContent.replace(' · próximamente','')}
     const chip=document.querySelector(`[data-chip="${a.dataset.enlace}"]`); if(chip){chip.textContent='Disponible';chip.classList.add('listo');} }
   else a.addEventListener('click',e=>e.preventDefault());
 });
